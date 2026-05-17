@@ -1,7 +1,32 @@
-<!-- Placeholder appended to plan-template.md by `dbt-specify init --warehouse databricks`.
-     Full Databricks plan tables land in Phase C (T-19). -->
+## Databricks-specific concerns
 
-## Databricks-specific concerns (placeholder)
+### Liquid Clustering decisions
 
-Fill in Liquid Clustering decisions, materialization choice, Unity Catalog placement,
-Photon compatibility, and cost guardrails per the constitution articles D1–D6.
+| Model | Size estimate | Clustering key | Justification |
+|---|---|---|---|
+| <model> | <GB> | `<col>` or none | <why> |
+
+### Materialization choice
+
+| Model | Materialization | Justification |
+|---|---|---|
+| <model> | view / table / materialized_view / streaming_table | <why this and not an MV> |
+
+### Unity Catalog placement
+
+| Model | Catalog | Schema | Grants |
+|---|---|---|---|
+| <model> | <catalog> | <schema> | `_governance/grants.sql` entry: <line ref> |
+
+### Photon compatibility
+
+| Model | Photon-compatible? | If no, why |
+|---|---|---|
+| <model> | yes / no | <reason> |
+
+### Cost guardrails
+
+| Risk | Mitigation |
+|---|---|
+| Predictive Optimization not enabled on changed tables | Verify via `DESCRIBE TABLE EXTENDED` after first build |
+| Streaming Table without watermark | Plan declares watermark column explicitly |
