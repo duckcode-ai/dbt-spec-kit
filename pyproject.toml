@@ -1,0 +1,75 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "dbt-spec-kit"
+version = "0.1.0"
+description = "Spec-driven development toolkit for dbt-centric data engineering, with warehouse-specific presets for Snowflake, Databricks, and Trino."
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.11"
+authors = [
+    { name = "duckcode-ai", email = "open-source@duckcode.ai" }
+]
+keywords = ["dbt", "spec-driven-development", "ai-agents", "analytics-engineering", "snowflake", "databricks", "trino"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+dependencies = [
+    "click>=8.1",
+    "jinja2>=3.1",
+    "pyyaml>=6.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+    "ruff>=0.4",
+    "mypy>=1.10",
+    "types-PyYAML",
+]
+
+[project.scripts]
+dbt-specify = "dbt_specify.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/duckcode-ai/dbt-spec-kit"
+Repository = "https://github.com/duckcode-ai/dbt-spec-kit"
+Issues = "https://github.com/duckcode-ai/dbt-spec-kit/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/dbt_specify"]
+
+[tool.hatch.build.targets.wheel.force-include]
+"memory" = "dbt_specify/_assets/memory"
+"templates" = "dbt_specify/_assets/templates"
+"presets" = "dbt_specify/_assets/presets"
+"skills" = "dbt_specify/_assets/skills"
+"commands" = "dbt_specify/_assets/commands"
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "W", "UP", "B", "A", "C4", "RET", "SIM"]
+ignore = []
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+warn_return_any = true
+warn_unused_configs = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"
+addopts = "-v --cov=dbt_specify --cov-report=term-missing"

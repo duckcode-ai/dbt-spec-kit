@@ -1,0 +1,60 @@
+# CLAUDE.md — {{ project_name }}
+
+This file orients AI coding agents (Claude Code, Cursor, Copilot, Gemini CLI, Cline, etc.) to this dbt project's conventions and workflow.
+
+## Project type
+
+dbt project, warehouse: **{{ warehouse }}**.
+
+## Workflow
+
+This project follows the four-phase loop from [dbt-spec-kit](https://github.com/duckcode-ai/dbt-spec-kit):
+
+1. **Specify** — `specs/<NNN>-<slug>/spec.md` is approved before planning.
+2. **Plan** — `specs/<NNN>-<slug>/plan.md` is approved before code.
+3. **Tasks** — `specs/<NNN>-<slug>/tasks.md` is the ordered work breakdown.
+4. **Implement** — code follows the plan exactly.
+
+After ship, write a retro to the same spec directory.
+
+## Slash commands
+
+Four commands map to the phases:
+
+- `/dbt.specify <feature description>` — drafts a spec from a prompt
+- `/dbt.plan` — reads the current spec and proposes a plan
+- `/dbt.tasks` — decomposes the approved plan into ordered tasks
+- `/dbt.implement` — executes the next task
+
+See `.dbt-specify/commands/` for the prompts.
+
+## Constitution
+
+The non-negotiable principles for this project are in `.dbt-specify/constitution.md`. Read them before writing any spec or plan.
+
+## Where context lives
+
+| Question | Where to find the answer |
+|---|---|
+| How does dbt work? (running tests, debugging, semantic layer mechanics) | [dbt-labs/dbt-agent-skills](https://github.com/dbt-labs/dbt-agent-skills) — install separately |
+| How does THIS project structure models / name things / handle CTE patterns? | This file + `.dbt-specify/constitution.md` |
+| What does the business actually mean by "customer" / "order" / "session"? | `.dbt-specify/skills/writing-business-glossary-specs/SKILL.md` — fill in your glossary spec |
+| What are {{ warehouse }}-specific patterns we follow here? | `.dbt-specify/constitution.md` (BEGIN {{ warehouse }} ADDITIONS section) |
+
+## Conventions specific to this project
+
+<!-- Add your team's specific conventions here. Examples:
+  - Staging models always use a 5-CTE pattern: source → renamed → filtered → enhanced → final
+  - All staging models include surrogate keys via dbt_utils.generate_surrogate_key
+  - We never use `*` in select statements outside the source CTE
+  - All masks/PII handling is in the staging layer, never marts
+-->
+
+(Fill in your team's conventions here.)
+
+## How AI agents should behave on this project
+
+- Always read `.dbt-specify/constitution.md` first.
+- Never skip a phase. Always produce a spec, then a plan, then tasks, before code.
+- Surface drift, don't fix it silently. If you notice a convention is being broken or a deprecated pattern is being used elsewhere, write it to `specs/<current>/findings.md` — do not edit unrelated files.
+- All proposed changes must trace to an AC in the spec.
