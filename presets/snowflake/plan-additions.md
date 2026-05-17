@@ -1,8 +1,30 @@
-<!-- Placeholder appended to plan-template.md by `dbt-specify init --warehouse snowflake`.
-     Full Snowflake plan tables (clustering decisions, warehouse sizing, query tags,
-     masking, cost guardrails) land in Phase C (T-16). -->
+## Snowflake-specific concerns
 
-## Snowflake-specific concerns (placeholder)
+### Clustering decisions
 
-Fill in clustering decisions, warehouse sizing, query tags, masking, and cost guardrails
-per the constitution articles S1–S6.
+| Model | Size estimate | Clustering key | Justification |
+|---|---|---|---|
+| <model> | <GB> | `[col1, col2]` or none | <why> |
+
+### Warehouse sizing
+
+| Job | Warehouse | Size | Auto-suspend (s) | Justification |
+|---|---|---|---|---|
+| <job> | <wh_name> | <size> | <s> | <why> |
+
+### Query tag plan
+
+The `query_tag` for this work will include: `project=<project>, model=<model>, env=<env>, run_id=<run_id>`.
+
+### Masking & governance
+
+| Column | Source | Policy | Tested? |
+|---|---|---|---|
+| <col> | <source.table.col> | <policy_name> | yes/no |
+
+### Cost guardrails
+
+| Risk | Mitigation |
+|---|---|
+| Unbounded scan on large source | Add date predicate via incremental config |
+| Unintended warehouse upsize | Use named warehouse, not USE WAREHOUSE inline |
