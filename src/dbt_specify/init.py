@@ -8,6 +8,10 @@ import click
 
 from dbt_specify.templates_loader import asset_dir
 
+# Filter junk that may live in the source tree during editable installs
+# (macOS Finder leftovers, pyc caches, etc.) so user-visible output stays clean.
+_IGNORE_JUNK = shutil.ignore_patterns(".DS_Store", "__pycache__", "*.pyc", ".gitkeep")
+
 
 def init_project(
     project_name: str,
@@ -71,7 +75,7 @@ def init_project(
 
     # 3. Copy templates
     templates_dst = specify_dir / "templates"
-    shutil.copytree(asset_dir("templates"), templates_dst)
+    shutil.copytree(asset_dir("templates"), templates_dst, ignore=_IGNORE_JUNK)
 
     # 4. Append warehouse-specific plan additions to plan-template
     plan_additions = (asset_dir("presets") / warehouse / "plan-additions.md").read_text()
@@ -85,18 +89,18 @@ def init_project(
 
     # 5. Copy skills
     skills_dst = specify_dir / "skills"
-    shutil.copytree(asset_dir("skills"), skills_dst)
+    shutil.copytree(asset_dir("skills"), skills_dst, ignore=_IGNORE_JUNK)
 
     # 6. Copy warehouse-specific skills
     warehouse_skills_src = asset_dir("presets") / warehouse / "skills"
     if warehouse_skills_src.exists():
         for skill_dir in warehouse_skills_src.iterdir():
             if skill_dir.is_dir():
-                shutil.copytree(skill_dir, skills_dst / skill_dir.name)
+                shutil.copytree(skill_dir, skills_dst / skill_dir.name, ignore=_IGNORE_JUNK)
 
     # 7. Copy commands
     commands_dst = specify_dir / "commands"
-    shutil.copytree(asset_dir("commands"), commands_dst)
+    shutil.copytree(asset_dir("commands"), commands_dst, ignore=_IGNORE_JUNK)
 
     # 8. Create or suggest CLAUDE.md
     claude_template = (
