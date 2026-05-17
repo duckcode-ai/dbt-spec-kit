@@ -1,0 +1,21 @@
+name: minimal_test_project
+version: '1.0.0'
+profile: minimal_test_profile
+
+config-version: 2
+
+model-paths: ["models"]
+seed-paths: ["seeds"]
+test-paths: ["tests"]
+analysis-paths: ["analyses"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+
+target-path: "target"
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+models:
+  minimal_test_project:
+    +materialized: view
