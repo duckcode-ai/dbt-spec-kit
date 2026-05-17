@@ -4,7 +4,18 @@ from __future__ import annotations
 from click.testing import CliRunner
 
 from dbt_specify.cli import main
-from dbt_specify.templates_loader import load_template
+from dbt_specify.templates_loader import asset_dir, load_template
+
+
+def test_asset_dir_resolves_all_known_kinds() -> None:
+    """Every kind named in templates_loader must resolve to an on-disk directory.
+
+    This is the cheap integration test for T-08: it catches missing packaged
+    asset directories (which would otherwise only fail at `init` time).
+    """
+    for kind in ("memory", "templates", "presets", "skills", "commands"):
+        path = asset_dir(kind)
+        assert path.is_dir(), f"asset kind '{kind}' did not resolve to a directory"
 
 
 def test_load_template_spec_smoke() -> None:
