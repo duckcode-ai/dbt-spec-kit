@@ -1,4 +1,4 @@
-"""Tests for the init command (Phase A: smoke tests; Phase B fills the rest)."""
+"""Tests for the init command."""
 from __future__ import annotations
 
 from click.testing import CliRunner
@@ -39,3 +39,12 @@ def test_cli_version_prints_package_version() -> None:
     result = runner.invoke(main, ["version"])
     assert result.exit_code == 0
     assert "0.1.0" in result.output
+
+
+def test_init_help_shows_flags() -> None:
+    runner = CliRunner()
+    result = runner.invoke(main, ["init", "--help"])
+    assert result.exit_code == 0
+    assert "--warehouse" in result.output
+    assert "--force" in result.output
+    assert "--target" in result.output
