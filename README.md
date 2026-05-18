@@ -56,7 +56,15 @@ See the full walkthrough: [Jaffle-shop AI SDLC walkthrough](docs/jaffle-shop-ai-
 
 ## Install
 
-Requires Python 3.11+. Recommended via [uv](https://docs.astral.sh/uv/):
+Requires Python 3.11+. Recommended via [uv](https://docs.astral.sh/uv/).
+
+After the first PyPI release:
+
+```bash
+uvx --from dbt-spec-kit dbt-specify init my-project --warehouse snowflake
+```
+
+From the GitHub source before the PyPI release:
 
 ```bash
 uvx --from git+https://github.com/duckcode-ai/dbt-spec-kit.git \
@@ -66,7 +74,7 @@ uvx --from git+https://github.com/duckcode-ai/dbt-spec-kit.git \
 Persistent install:
 
 ```bash
-uv tool install dbt-spec-kit --from git+https://github.com/duckcode-ai/dbt-spec-kit.git
+uv tool install dbt-spec-kit
 dbt-specify --version
 ```
 
@@ -121,6 +129,7 @@ Use `dbt-specify ci` when the lifecycle and dbt artifact checks should block a P
 - [Enterprise CI](docs/enterprise-ci.md)
 - [Brownfield onboarding](docs/brownfield-onboarding.md)
 - [EARS cheatsheet](docs/ears-cheatsheet.md)
+- [Releasing to PyPI](docs/releasing.md)
 - [Snowflake guide](docs/warehouse-guides/snowflake.md)
 - [Databricks guide](docs/warehouse-guides/databricks.md)
 - [Trino guide](docs/warehouse-guides/trino.md)

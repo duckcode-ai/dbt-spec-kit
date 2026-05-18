@@ -41,9 +41,20 @@ def test_launch_ready_oss_files_exist() -> None:
         ".github/pull_request_template.md",
         ".github/ISSUE_TEMPLATE/bug_report.md",
         ".github/ISSUE_TEMPLATE/feature_request.md",
+        ".github/workflows/release.yml",
+        "docs/releasing.md",
     ]
     for relative_path in required_paths:
         assert (ROOT / relative_path).exists(), f"Missing OSS file: {relative_path}"
+
+
+def test_release_workflow_uses_trusted_publishing() -> None:
+    workflow = (ROOT / ".github" / "workflows" / "release.yml").read_text()
+    assert "pypa/gh-action-pypi-publish@release/v1" in workflow
+    assert "id-token: write" in workflow
+    assert "name: pypi" in workflow
+    assert "python -m build --sdist --wheel" in workflow
+    assert "python -m twine check dist/*" in workflow
 
 
 def _markdown_links(text: str) -> list[str]:

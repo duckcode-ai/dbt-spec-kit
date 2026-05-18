@@ -41,6 +41,14 @@ See `.dbt-specify/templates/ci/github-actions-dbt-specify.yml` after running ini
 `templates/ci/github-actions-dbt-specify.yml` in this repo, for a reusable starting point. The
 workflow assumes your dbt adapter and dbt profile are already available through your CI setup.
 
+## Package release workflow
+
+This repository publishes the `dbt-spec-kit` Python package with PyPI Trusted Publishing through
+`.github/workflows/release.yml`. The workflow builds source and wheel distributions, checks them
+with Twine, and publishes from the GitHub `pypi` environment without storing a PyPI token.
+
+See [Releasing to PyPI](releasing.md) for the maintainer runbook.
+
 ## PR evidence example
 
 For the jaffle-shop semantic mart walkthrough, the PR should include:
