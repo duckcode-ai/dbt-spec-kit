@@ -10,6 +10,12 @@ Specify  →  Plan  →  Tasks  →  Implement
 
 Each phase has a **human checkpoint**. No phase skips, no auto-merge.
 
+The four phases are required during development. After review, artifact retention is a team policy:
+keep decision records in `main`, but do not keep every short-lived agent note. The default enterprise
+recommendation is balanced retention: merge `spec.md`, `plan.md`, and review/report evidence, and
+keep `tasks.md` only for complex, regulated, or high-risk work. See
+[Spec retention and repo hygiene](spec-retention-and-repo-hygiene.md).
+
 ## Phase 1: Specify
 
 **Input:** a feature description (one sentence or one paragraph).
@@ -73,4 +79,6 @@ After ship, the engineer (or agent under direction) writes a retro covering:
 - What to change for next time (CLAUDE.md updates, new skills, eval fixtures)
 - Metrics: plan-phase time, implement-phase time, AI/human review findings, post-merge issues
 
-Retros are filed as `specs/<NNN>-<slug>/retro.md` or appended to `implementation-summary.md`. CLAUDE.md and skills updates are filed as separate PRs so the methodology layer keeps improving.
+Retros are filed as `specs/<NNN>-<slug>/retro.md` or appended to `implementation-summary.md` when
+the team retention policy calls for them. CLAUDE.md and skills updates are filed as separate PRs so
+the methodology layer keeps improving.

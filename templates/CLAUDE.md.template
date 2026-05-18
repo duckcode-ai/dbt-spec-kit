@@ -59,6 +59,14 @@ The non-negotiable principles for this project are in `.dbt-specify/constitution
 - Keep implementation inside the approved plan's file list.
 - Human approval remains the merge gate.
 
+## Spec retention
+
+- Keep decision artifacts in `specs/<NNN>-<slug>/`.
+- Do not commit raw agent scratch notes, abandoned drafts, exploratory prompts, or temporary logs.
+- Follow the team's retention policy for `tasks.md`, `findings.md`, review notes, and retro notes.
+- Default to balanced retention: merge `spec.md`, `plan.md`, and review/report evidence; keep
+  `tasks.md` for complex, regulated, or high-risk work.
+
 ## Conventions specific to this project
 
 <!-- Add your team's specific conventions here. Examples:

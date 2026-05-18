@@ -6,11 +6,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.0] — 2026-05-18
+
 ### Added
 - Warehouse presets and guides for Redshift, Postgres, SQL Server, Azure SQL, MySQL, DuckDB,
   MotherDuck, and Athena.
 - `/dbt.implement-all` command template for sequential multi-task implementation with validation
   checkpoints and stop conditions.
+- Enterprise spec retention and repo hygiene guidance for balancing decision records with repo noise.
+- README enterprise adoption choices that surface workflow, retention, rollout, agent, warehouse, and
+  CI guidance before the detailed docs list.
+- README spec folder structure guidance for large-team feature directories.
 
 ## [1.1.0] — 2026-05-18
 
