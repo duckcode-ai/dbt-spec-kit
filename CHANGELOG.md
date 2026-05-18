@@ -6,17 +6,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Added
-- Tutorial series covering initialization, jaffle-shop, brownfield enterprise adoption, and
-  skills/sub-agent handoffs.
-- README explanation of skills versus sub-agents.
-
 ## [1.1.0] — 2026-05-18
 
 ### Added
 - Sub-agent role templates installed to `.dbt-specify/agents/`.
 - Enterprise skills for AC traceability, PII/access governance, project convention capture, and CI evidence review.
 - Skills and sub-agents documentation showing how dbt-spec-kit composes with dbt-labs/dbt-agent-skills.
+- Tutorial series covering initialization, jaffle-shop, brownfield enterprise adoption, and
+  skills/sub-agent handoffs.
+- README explanation of skills versus sub-agents.
 - Launch-ready OSS project files: issue templates, pull request template, SECURITY, SUPPORT, and ROADMAP.
 - Jaffle-shop AI SDLC walkthrough using the upstream dbt Labs project as the onboarding demo.
 - Team onboarding playbook for introducing dbt-spec-kit to analytics engineering teams.
