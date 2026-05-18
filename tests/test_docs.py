@@ -135,6 +135,7 @@ def test_readme_highlights_enterprise_adoption_choices() -> None:
 
     assert "Enterprise adoption choices" in readme
     assert "Spec folder structure" in readme
+    assert "Jira bridge" in readme
     assert "Development workflow" in readme
     assert "Repo retention" in readme
     assert "Brownfield rollout" in readme
@@ -144,6 +145,7 @@ def test_readme_highlights_enterprise_adoption_choices() -> None:
     assert "keep approved decision records, not raw agent scratch work" in readme
     assert "001-core-customer-segmentation" in readme
     assert "not as nested folders" in readme
+    assert "docs/integrations/jira.md" in readme
 
 
 def test_uvx_command_examples_are_clear() -> None:
@@ -169,6 +171,7 @@ def test_tutorials_cover_enterprise_onboarding_path() -> None:
         tutorials_dir / "02-jaffle-shop-change.md",
         tutorials_dir / "03-brownfield-enterprise-adoption.md",
         tutorials_dir / "04-skills-and-sub-agent-handoffs.md",
+        tutorials_dir / "05-jira-to-spec-workflow.md",
     ]
     for path in required_paths:
         assert path.exists(), f"Missing tutorial: {path.relative_to(ROOT)}"
@@ -179,11 +182,30 @@ def test_tutorials_cover_enterprise_onboarding_path() -> None:
     assert "Ship a jaffle-shop change" in index
     assert "Adopt in a brownfield enterprise repo" in index
     assert "Run skills and sub-agent handoffs" in index
+    assert "Jira to spec workflow" in index
 
     handoffs = (tutorials_dir / "04-skills-and-sub-agent-handoffs.md").read_text()
     assert "dbt Labs skills" in handoffs
     assert ".dbt-specify/agents/" in handoffs
     assert "Human approval remains the merge gate" in handoffs
+
+
+def test_jira_integration_docs_are_documented() -> None:
+    guide = ROOT / "docs" / "integrations" / "jira.md"
+    tutorial = ROOT / "docs" / "tutorials" / "05-jira-to-spec-workflow.md"
+    assert guide.exists()
+    _assert_local_links_exist(guide)
+    _assert_local_links_exist(tutorial)
+
+    guide_text = guide.read_text()
+    tutorial_text = tutorial.read_text()
+    assert "JIRA_BASE_URL" in guide_text
+    assert "dbt-specify jira pull" in guide_text
+    assert "dbt-specify jira attach" in guide_text
+    assert "dbt-specify jira create-tasks" in guide_text
+    assert "dbt-specify jira sync" in guide_text
+    assert "Jira story -> spec.md -> plan.md -> tasks.md" in guide_text
+    assert "The PR remains the merge gate" in tutorial_text
 
 
 def _markdown_links(text: str) -> list[str]:

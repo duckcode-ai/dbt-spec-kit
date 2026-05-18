@@ -31,6 +31,7 @@ def test_cli_help_lists_enterprise_subcommands() -> None:
     assert "ci" in result.output
     assert "doctor" in result.output
     assert "init" in result.output
+    assert "jira" in result.output
     assert "report" in result.output
     assert "validate" in result.output
     assert "version" in result.output
@@ -40,7 +41,7 @@ def test_cli_version_prints_package_version() -> None:
     runner = CliRunner()
     result = runner.invoke(main, ["version"])
     assert result.exit_code == 0
-    assert "1.2.0" in result.output
+    assert "1.3.0" in result.output
 
 
 def test_init_help_shows_flags() -> None:

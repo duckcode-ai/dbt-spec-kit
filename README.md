@@ -40,6 +40,7 @@ become clear.
 | Agent knowledge | Use dbt Labs skills for dbt mechanics. Use dbt-spec-kit skills and sub-agent roles for business meaning, planning, governance, and review evidence. | [Skills and sub-agents](docs/skills-and-sub-agents.md) |
 | Warehouse guidance | Pick the closest warehouse preset for cost, materialization, SQL dialect, and governance guardrails. The project still runs through your normal dbt adapter and database connection. | [Warehouse guides](docs/warehouse-guides) |
 | CI evidence | Start with local `validate` and `report`; promote `dbt-specify ci` when the team wants lifecycle checks to block PRs. | [Enterprise CI](docs/enterprise-ci.md) |
+| Jira integration | Pull Jira issues into local specs, attach approved specs/plans back to Jira, and create Jira subtasks from `tasks.md`. | [Jira integration](docs/integrations/jira.md) |
 
 The key repo hygiene rule: keep approved decision records, not raw agent scratch work.
 
@@ -172,6 +173,26 @@ If you did not install the CLI persistently, run the `dbt-specify` commands abov
 
 Use `dbt-specify ci` when the lifecycle and dbt artifact checks should block a PR.
 
+## Jira bridge
+
+For teams that use Jira as the intake system:
+
+```bash
+export JIRA_BASE_URL="https://your-company.atlassian.net"
+export JIRA_EMAIL="you@company.com"
+export JIRA_API_TOKEN="<atlassian-api-token>"
+
+uvx --from dbt-spec-kit dbt-specify jira pull NBA-123
+uvx --from dbt-spec-kit dbt-specify jira attach NBA-123 \
+  --spec specs/001-nba-123-player-journey/spec.md \
+  --plan specs/001-nba-123-player-journey/plan.md
+uvx --from dbt-spec-kit dbt-specify jira create-tasks NBA-123 \
+  --from specs/001-nba-123-player-journey/tasks.md
+```
+
+Jira remains intake and tracking. `spec.md` and `plan.md` remain the approved engineering contract.
+See [Jira integration](docs/integrations/jira.md).
+
 ## Who this is for
 
 - Analytics engineers who want AI help without losing dbt conventions.
@@ -189,6 +210,7 @@ Use `dbt-specify ci` when the lifecycle and dbt artifact checks should block a P
 - [Spec retention and repo hygiene](docs/spec-retention-and-repo-hygiene.md)
 - [Skills and sub-agents](docs/skills-and-sub-agents.md)
 - [Enterprise CI](docs/enterprise-ci.md)
+- [Jira integration](docs/integrations/jira.md)
 - [Brownfield onboarding](docs/brownfield-onboarding.md)
 - [EARS cheatsheet](docs/ears-cheatsheet.md)
 - [Releasing to PyPI](docs/releasing.md)
