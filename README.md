@@ -41,6 +41,7 @@ become clear.
 | Warehouse guidance | Pick the closest warehouse preset for cost, materialization, SQL dialect, and governance guardrails. The project still runs through your normal dbt adapter and database connection. | [Warehouse guides](docs/warehouse-guides) |
 | CI evidence | Start with local `validate` and `report`; promote `dbt-specify ci` when the team wants lifecycle checks to block PRs. | [Enterprise CI](docs/enterprise-ci.md) |
 | Jira integration | Pull Jira issues into local specs, attach approved specs/plans back to Jira, and create Jira subtasks from `tasks.md`. | [Jira integration](docs/integrations/jira.md) |
+| Confluence integration | Pull approved wiki context into `specs/<NNN>/context/` and publish spec summaries back to Confluence. | [Confluence integration](docs/integrations/confluence.md) |
 
 The key repo hygiene rule: keep approved decision records, not raw agent scratch work.
 
@@ -193,6 +194,28 @@ uvx --from dbt-spec-kit dbt-specify jira create-tasks NBA-123 \
 Jira remains intake and tracking. `spec.md` and `plan.md` remain the approved engineering contract.
 See [Jira integration](docs/integrations/jira.md).
 
+## Confluence bridge
+
+For teams that use Confluence as the knowledge base:
+
+```bash
+export CONFLUENCE_BASE_URL="https://your-company.atlassian.net"
+export CONFLUENCE_EMAIL="you@company.com"
+export CONFLUENCE_API_TOKEN="<atlassian-api-token>"
+
+uvx --from dbt-spec-kit dbt-specify confluence pull-page 123456789 \
+  --to specs/001-player-journey/context/player-metrics.md
+uvx --from dbt-spec-kit dbt-specify confluence publish \
+  --spec-dir specs/001-player-journey \
+  --space-key DATA \
+  --parent-id 987654321
+uvx --from dbt-spec-kit dbt-specify confluence sync \
+  --spec-dir specs/001-player-journey
+```
+
+Confluence remains the knowledge base. `spec.md`, `plan.md`, and `tasks.md` remain the approved
+implementation contract. See [Confluence integration](docs/integrations/confluence.md).
+
 ## Who this is for
 
 - Analytics engineers who want AI help without losing dbt conventions.
@@ -211,6 +234,7 @@ See [Jira integration](docs/integrations/jira.md).
 - [Skills and sub-agents](docs/skills-and-sub-agents.md)
 - [Enterprise CI](docs/enterprise-ci.md)
 - [Jira integration](docs/integrations/jira.md)
+- [Confluence integration](docs/integrations/confluence.md)
 - [Brownfield onboarding](docs/brownfield-onboarding.md)
 - [EARS cheatsheet](docs/ears-cheatsheet.md)
 - [Releasing to PyPI](docs/releasing.md)

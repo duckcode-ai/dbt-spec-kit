@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.4.0] — 2026-05-18
+
+### Added
+- Confluence bridge commands for pulling wiki pages into local spec context, publishing spec
+  summaries, and syncing existing Confluence pages from approved artifacts.
+- Confluence integration docs and tutorial for knowledge-base context workflows.
+
 ## [1.3.0] — 2026-05-18
 
 ### Added
