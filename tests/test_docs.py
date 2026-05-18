@@ -83,9 +83,47 @@ def test_skills_and_sub_agents_doc_covers_composition() -> None:
         assert role in text
 
 
+def test_tutorials_cover_enterprise_onboarding_path() -> None:
+    tutorials_dir = ROOT / "docs" / "tutorials"
+    required_paths = [
+        tutorials_dir / "README.md",
+        tutorials_dir / "01-initialize-a-dbt-repo.md",
+        tutorials_dir / "02-jaffle-shop-change.md",
+        tutorials_dir / "03-brownfield-enterprise-adoption.md",
+        tutorials_dir / "04-skills-and-sub-agent-handoffs.md",
+    ]
+    for path in required_paths:
+        assert path.exists(), f"Missing tutorial: {path.relative_to(ROOT)}"
+        _assert_local_links_exist(path)
+
+    index = (tutorials_dir / "README.md").read_text()
+    assert "Initialize a dbt repo" in index
+    assert "Ship a jaffle-shop change" in index
+    assert "Adopt in a brownfield enterprise repo" in index
+    assert "Run skills and sub-agent handoffs" in index
+
+    handoffs = (tutorials_dir / "04-skills-and-sub-agent-handoffs.md").read_text()
+    assert "dbt Labs skills" in handoffs
+    assert ".dbt-specify/agents/" in handoffs
+    assert "Human approval remains the merge gate" in handoffs
+
+
 def _markdown_links(text: str) -> list[str]:
     return re.findall(r"(?<!!)\[[^\]]+\]\(([^)]+)\)", text)
 
 
 def _is_external_or_anchor(link: str) -> bool:
     return link.startswith(("http://", "https://", "mailto:", "#"))
+
+
+def _assert_local_links_exist(path: Path) -> None:
+    text = path.read_text()
+    for link in _markdown_links(text):
+        if _is_external_or_anchor(link):
+            continue
+        target = link.split("#", 1)[0]
+        if not target:
+            continue
+        assert (path.parent / target).resolve().exists(), (
+            f"{path.relative_to(ROOT)} link target does not exist: {link}"
+        )

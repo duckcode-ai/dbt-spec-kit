@@ -97,6 +97,7 @@ dbt-specify doctor
 
 ## Next steps
 
+- Follow the [tutorials](tutorials/README.md) for a guided path from install to enterprise adoption.
 - Try the [jaffle-shop AI SDLC walkthrough](jaffle-shop-ai-sdlc-walkthrough.md) to see the process on a real dbt Labs project.
 - Use the [team onboarding playbook](team-onboarding-playbook.md) when presenting the workflow to an analytics engineering team.
 - Read [methodology.md](methodology.md) for the full four-phase loop.

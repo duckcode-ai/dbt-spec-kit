@@ -102,3 +102,6 @@ Business request
 - Never let two agents edit the same dbt model or YAML file concurrently.
 - Keep implementation inside the approved plan's file list.
 - Human approval remains the merge gate.
+
+For a hands-on sequence, follow
+[Tutorial 4: Run skills and sub-agent handoffs](tutorials/04-skills-and-sub-agent-handoffs.md).
