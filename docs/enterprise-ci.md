@@ -58,3 +58,6 @@ For the jaffle-shop semantic mart walkthrough, the PR should include:
 - `dbt parse` evidence showing semantic models, metrics, and saved queries still resolve
 - `dbt-specify-report.md` generated with `dbt-specify report --format markdown`
 - reviewer sign-off for metric compatibility and downstream impact
+
+For delegated reviews, attach the relevant `.dbt-specify/agents/` output files such as
+`warehouse-review.md`, `governance-review.md`, or `review.md`.

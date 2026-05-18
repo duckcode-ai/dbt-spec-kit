@@ -102,7 +102,11 @@ def init_project(
     commands_dst = specify_dir / "commands"
     shutil.copytree(asset_dir("commands"), commands_dst, ignore=_IGNORE_JUNK)
 
-    # 8. Create or suggest CLAUDE.md
+    # 8. Copy sub-agent role templates
+    agents_dst = specify_dir / "agents"
+    shutil.copytree(asset_dir("agents"), agents_dst, ignore=_IGNORE_JUNK)
+
+    # 9. Create or suggest CLAUDE.md
     claude_template = (
         (asset_dir("templates") / "CLAUDE.md.template")
         .read_text()
@@ -122,7 +126,7 @@ def init_project(
         claude_target.write_text(claude_template)
         click.echo(f"wrote {claude_target.name}")
 
-    # 9. Create empty specs/ directory for the user's first spec
+    # 10. Create empty specs/ directory for the user's first spec
     (target_dir / "specs").mkdir(exist_ok=True)
     (target_dir / "specs" / ".gitkeep").touch()
 

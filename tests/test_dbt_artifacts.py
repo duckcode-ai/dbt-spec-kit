@@ -46,6 +46,22 @@ def test_doctor_reports_brownfield_gaps(minimal_dbt_project: Path) -> None:
     assert "DBT_SPECIFY_MISSING" in result.output
 
 
+def test_doctor_warns_when_agents_dir_missing(minimal_dbt_project: Path) -> None:
+    runner = CliRunner()
+    runner.invoke(
+        main,
+        ["init", "test", "--warehouse", "snowflake", "--target", str(minimal_dbt_project)],
+    )
+    agents_dir = minimal_dbt_project / ".dbt-specify" / "agents"
+    for path in agents_dir.iterdir():
+        path.unlink()
+    agents_dir.rmdir()
+
+    result = runner.invoke(main, ["doctor", "--target", str(minimal_dbt_project)])
+    assert result.exit_code == 0, result.output
+    assert "AGENTS_DIR_MISSING" in result.output
+
+
 def _write_dbt_project_with_manifest(
     tmp_path: Path,
     include_test_child: bool = True,

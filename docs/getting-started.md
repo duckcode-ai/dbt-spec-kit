@@ -17,7 +17,7 @@ The recommended path uses `uv` for isolated tool installation:
 curl -LsSf https://astral.sh/uv/install.sh | sh
 
 # install dbt-specify as a tool
-uv tool install dbt-spec-kit --from git+https://github.com/duckcode-ai/dbt-spec-kit.git
+uv tool install dbt-spec-kit
 ```
 
 Verify:
@@ -38,6 +38,7 @@ This creates:
 - `.dbt-specify/templates/` — spec, plan, tasks, retro
 - `.dbt-specify/skills/` — tier-2 and tier-3 spec-writing skills
 - `.dbt-specify/commands/` — slash-command prompts
+- `.dbt-specify/agents/` — sub-agent role and handoff templates
 - `CLAUDE.md` — the agent orientation file (or `CLAUDE.md.dbt-specify-suggested` if you already have one)
 - `specs/` — empty directory for your first spec
 
@@ -55,7 +56,12 @@ npx skills add dbt-labs/dbt-agent-skills
 tessl install dbt-labs/dbt-agent-skills
 ```
 
-CLAUDE.md from `dbt-specify init` already defers tier-1 questions to that collection.
+CLAUDE.md from `dbt-specify init` already defers tier-1 questions to that collection and routes
+business, warehouse, governance, and traceability decisions to `.dbt-specify/skills/`.
+
+For delegation guidance, see [Skills and sub-agents](skills-and-sub-agents.md). The short version:
+skills are reusable knowledge; sub-agents are bounded workers with file ownership and output
+contracts.
 
 ## Your first spec
 
@@ -94,5 +100,6 @@ dbt-specify doctor
 - Try the [jaffle-shop AI SDLC walkthrough](jaffle-shop-ai-sdlc-walkthrough.md) to see the process on a real dbt Labs project.
 - Use the [team onboarding playbook](team-onboarding-playbook.md) when presenting the workflow to an analytics engineering team.
 - Read [methodology.md](methodology.md) for the full four-phase loop.
+- Read [skills-and-sub-agents.md](skills-and-sub-agents.md) for dbt Labs skills composition and safe sub-agent delegation.
 - Read [warehouse-guides/snowflake.md](warehouse-guides/snowflake.md) or [databricks.md](warehouse-guides/databricks.md) for your warehouse's preset.
 - See [`examples/jaffle-shop-staging-overhaul/`](../examples/jaffle-shop-staging-overhaul/) for a complete worked example.

@@ -55,9 +55,9 @@ git push origin v1.0.0
 The release workflow verifies that the GitHub Release tag matches the `pyproject.toml` version. A
 release tagged `v1.0.0` must publish package version `1.0.0`; mismatches fail before upload.
 
-## Install after release
+## Install from PyPI
 
-Once the first PyPI release is published, users can install from PyPI:
+Users can install from PyPI:
 
 ```bash
 uvx --from dbt-spec-kit dbt-specify --version

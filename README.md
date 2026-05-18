@@ -36,8 +36,7 @@ The fastest way to understand the workflow is to apply it to the upstream
 git clone https://github.com/dbt-labs/jaffle-shop.git
 cd jaffle-shop
 
-uvx --from git+https://github.com/duckcode-ai/dbt-spec-kit.git \
-  dbt-specify init jaffle-shop --warehouse bigquery
+uvx --from dbt-spec-kit dbt-specify init jaffle-shop --warehouse bigquery
 
 dbt-specify doctor
 ```
@@ -58,13 +57,11 @@ See the full walkthrough: [Jaffle-shop AI SDLC walkthrough](docs/jaffle-shop-ai-
 
 Requires Python 3.11+. Recommended via [uv](https://docs.astral.sh/uv/).
 
-After the first PyPI release:
-
 ```bash
 uvx --from dbt-spec-kit dbt-specify init my-project --warehouse snowflake
 ```
 
-From the GitHub source before the PyPI release:
+From GitHub source for development builds:
 
 ```bash
 uvx --from git+https://github.com/duckcode-ai/dbt-spec-kit.git \
@@ -88,6 +85,7 @@ Running `dbt-specify init` in an existing dbt project creates:
 - `.dbt-specify/templates/` for spec, plan, tasks, retro, and CI templates
 - `.dbt-specify/skills/` for spec-writing guidance
 - `.dbt-specify/commands/` for agent prompts
+- `.dbt-specify/agents/` for sub-agent role and handoff templates
 - `CLAUDE.md` or `CLAUDE.md.dbt-specify-suggested`
 - `specs/` for feature-level SDLC artifacts
 
@@ -126,6 +124,7 @@ Use `dbt-specify ci` when the lifecycle and dbt artifact checks should block a P
 - [Jaffle-shop AI SDLC walkthrough](docs/jaffle-shop-ai-sdlc-walkthrough.md)
 - [Team onboarding playbook](docs/team-onboarding-playbook.md)
 - [Methodology](docs/methodology.md)
+- [Skills and sub-agents](docs/skills-and-sub-agents.md)
 - [Enterprise CI](docs/enterprise-ci.md)
 - [Brownfield onboarding](docs/brownfield-onboarding.md)
 - [EARS cheatsheet](docs/ears-cheatsheet.md)

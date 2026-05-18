@@ -43,6 +43,21 @@ The non-negotiable principles for this project are in `.dbt-specify/constitution
 | What does the business actually mean by "customer" / "order" / "session"? | `.dbt-specify/skills/writing-business-glossary-specs/SKILL.md` — fill in your glossary spec |
 | What are {{ warehouse }}-specific patterns we follow here? | `.dbt-specify/constitution.md` (BEGIN {{ warehouse }} ADDITIONS section) |
 
+## Skill routing
+
+- Use `dbt-labs/dbt-agent-skills` for dbt framework mechanics: dbt commands, tests, docs, semantic layer, Mesh, MCP, troubleshooting, and migration.
+- Use `.dbt-specify/skills/` for business meaning, grain, project conventions, warehouse decisions, governance, traceability, and CI evidence.
+- Use `.dbt-specify/agents/` when delegating bounded work to sub-agents.
+- Do not copy or rewrite dbt Labs skills into this repo. Reference them as the framework layer.
+
+## Sub-agent safety rules
+
+- Parallelize discovery and review only.
+- Serialize implementation by task.
+- Never let two agents edit the same dbt model or YAML file concurrently.
+- Keep implementation inside the approved plan's file list.
+- Human approval remains the merge gate.
+
 ## Conventions specific to this project
 
 <!-- Add your team's specific conventions here. Examples:

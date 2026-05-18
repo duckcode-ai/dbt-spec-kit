@@ -5,7 +5,7 @@ from functools import cache
 from importlib import resources
 from pathlib import Path
 
-_KNOWN_ASSETS = {"memory", "templates", "presets", "skills", "commands"}
+_KNOWN_ASSETS = {"memory", "templates", "presets", "skills", "commands", "agents"}
 
 
 @cache
@@ -19,7 +19,7 @@ def asset_dir(kind: str) -> Path:
          This is the layout an editable install sees (no copy step happens).
 
     Args:
-        kind: One of "memory", "templates", "presets", "skills", "commands".
+        kind: One of "memory", "templates", "presets", "skills", "commands", "agents".
 
     Returns:
         Absolute Path to the directory.
