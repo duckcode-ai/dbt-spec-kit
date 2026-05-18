@@ -6,6 +6,17 @@ from pathlib import Path
 import click
 
 from dbt_specify._version import __version__
+from dbt_specify.confluence import (
+    ConfluenceError,
+    make_confluence_client,
+    pull_page_to_context,
+)
+from dbt_specify.confluence import (
+    publish_spec_dir as publish_confluence_spec_dir,
+)
+from dbt_specify.confluence import (
+    sync_spec_dir as sync_confluence_spec_dir,
+)
 from dbt_specify.dbt_artifacts import validate_dbt_project
 from dbt_specify.doctor import doctor_project
 from dbt_specify.init import SUPPORTED_WAREHOUSES, init_project
@@ -351,6 +362,117 @@ def jira_sync(issue_key: str, spec_dir: Path, issue_type_name: str, dry_run: boo
             click.echo(f"would create: {result.summary}")
     if not uploaded and not subtasks:
         click.echo("nothing to sync")
+
+
+@main.group()
+def confluence() -> None:
+    """Read from and publish dbt-specify context to Confluence Cloud."""
+
+
+@confluence.command("pull-page")
+@click.argument("page_id")
+@click.option(
+    "--to",
+    "output_path",
+    required=True,
+    type=click.Path(dir_okay=False, path_type=Path),
+    help="Local markdown file to write, usually specs/<NNN>/context/<name>.md.",
+)
+@click.option(
+    "--spec-dir",
+    type=click.Path(file_okay=False, path_type=Path),
+    default=None,
+    help="Optional spec directory whose confluence.yml should record this source page.",
+)
+def confluence_pull_page(page_id: str, output_path: Path, spec_dir: Path | None) -> None:
+    """Pull a Confluence page into local markdown context."""
+    try:
+        page = pull_page_to_context(
+            client=make_confluence_client(),
+            page_id=page_id,
+            output_path=output_path.resolve(),
+            spec_dir=spec_dir.resolve() if spec_dir else None,
+        )
+    except ConfluenceError as error:
+        click.echo(f"error: {error}", err=True)
+        raise SystemExit(1) from error
+
+    click.echo(f"pulled {page.title} ({page.page_id})")
+    click.echo(f"wrote {output_path}")
+
+
+@confluence.command("publish")
+@click.option(
+    "--spec-dir",
+    required=True,
+    type=click.Path(file_okay=False, path_type=Path),
+    help="Path to specs/<NNN>-<slug>/.",
+)
+@click.option("--space-key", default=None, help="Confluence space key for new pages.")
+@click.option("--space-id", default=None, help="Confluence v2 space id for new pages.")
+@click.option("--parent-id", default=None, help="Optional Confluence parent page id.")
+@click.option("--page-id", default=None, help="Existing Confluence page id to update.")
+@click.option("--title", default=None, help="Page title. Defaults to dbt-spec-kit: <spec-dir>.")
+@click.option("--dry-run", is_flag=True, help="Print the publish action without writing.")
+def confluence_publish(
+    spec_dir: Path,
+    space_key: str | None,
+    space_id: str | None,
+    parent_id: str | None,
+    page_id: str | None,
+    title: str | None,
+    dry_run: bool,
+) -> None:
+    """Create or update a Confluence summary page for a spec directory."""
+    try:
+        page = publish_confluence_spec_dir(
+            client=None if dry_run else make_confluence_client(),
+            spec_dir=spec_dir.resolve(),
+            space_key=space_key,
+            space_id=space_id,
+            parent_id=parent_id,
+            page_id=page_id,
+            title=title,
+            dry_run=dry_run,
+        )
+    except ConfluenceError as error:
+        click.echo(f"error: {error}", err=True)
+        raise SystemExit(1) from error
+
+    action = "would create" if dry_run and page.created else "would update" if dry_run else (
+        "created" if page.created else "updated"
+    )
+    click.echo(f"{action} Confluence page {page.page_id}: {page.title}")
+    if page.page_url != "<dry-run>":
+        click.echo(page.page_url)
+
+
+@confluence.command("sync")
+@click.option(
+    "--spec-dir",
+    required=True,
+    type=click.Path(file_okay=False, path_type=Path),
+    help="Path to specs/<NNN>-<slug>/ with confluence.yml.",
+)
+@click.option("--dry-run", is_flag=True, help="Print the sync action without writing.")
+def confluence_sync(spec_dir: Path, dry_run: bool) -> None:
+    """Update the Confluence page recorded in specs/<NNN>/confluence.yml."""
+    try:
+        page = sync_confluence_spec_dir(
+            client=None if dry_run else make_confluence_client(),
+            spec_dir=spec_dir.resolve(),
+            dry_run=dry_run,
+        )
+    except ConfluenceError as error:
+        click.echo(f"error: {error}", err=True)
+        raise SystemExit(1) from error
+
+    action = "would create" if dry_run and page.created else "would update" if dry_run else (
+        "created" if page.created else "updated"
+    )
+    click.echo(f"{action} Confluence page {page.page_id}: {page.title}")
+    if page.page_url != "<dry-run>":
+        click.echo(page.page_url)
 
 
 @main.command()
