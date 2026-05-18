@@ -23,6 +23,8 @@
 
 - [ ] `dbt build --select +<final_model>+` runs green locally
 - [ ] `dbt test` passes for all changed models
+- [ ] `dbt-specify validate project` passes
+- [ ] `dbt-specify validate dbt --manifest target/manifest.json` passes after `dbt parse`
 - [ ] Unit tests for AC3 and AC4 are present
 - [ ] Downstream exposures still resolve
 

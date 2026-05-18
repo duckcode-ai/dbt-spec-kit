@@ -23,14 +23,14 @@ def init_project(
 
     Args:
         project_name: Human-readable name for the project (logged, not enforced).
-        warehouse: One of "snowflake", "databricks", or "trino".
+        warehouse: One of "snowflake", "databricks", "trino", or "bigquery".
         target_dir: Where to write the .dbt-specify/ directory.
         force: If True, overwrite existing .dbt-specify/.
 
     Raises:
         SystemExit: On any precondition failure.
     """
-    if warehouse not in {"snowflake", "databricks", "trino"}:
+    if warehouse not in {"snowflake", "databricks", "trino", "bigquery"}:
         click.echo(f"error: unknown warehouse '{warehouse}'", err=True)
         raise SystemExit(2)
 

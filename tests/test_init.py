@@ -23,11 +23,14 @@ def test_load_template_spec_smoke() -> None:
     assert "EARS" in content
 
 
-def test_cli_help_lists_three_subcommands() -> None:
+def test_cli_help_lists_enterprise_subcommands() -> None:
     runner = CliRunner()
     result = runner.invoke(main, ["--help"])
     assert result.exit_code == 0, result.output
+    assert "ci" in result.output
+    assert "doctor" in result.output
     assert "init" in result.output
+    assert "report" in result.output
     assert "validate" in result.output
     assert "version" in result.output
 
@@ -36,7 +39,7 @@ def test_cli_version_prints_package_version() -> None:
     runner = CliRunner()
     result = runner.invoke(main, ["version"])
     assert result.exit_code == 0
-    assert "0.1.0" in result.output
+    assert "1.0.0" in result.output
 
 
 def test_init_help_shows_flags() -> None:
@@ -62,6 +65,8 @@ def test_init_creates_dbt_specify_dir(minimal_dbt_project: Path) -> None:
     assert (minimal_dbt_project / ".dbt-specify" / "templates" / "plan-template.md").exists()
     # Commands and skills directories created
     assert (minimal_dbt_project / ".dbt-specify" / "commands").is_dir()
+    assert (minimal_dbt_project / ".dbt-specify" / "commands" / "dbt.analyze.md").exists()
+    assert (minimal_dbt_project / ".dbt-specify" / "commands" / "dbt.review.md").exists()
     assert (minimal_dbt_project / ".dbt-specify" / "skills").is_dir()
     # CLAUDE.md is written when none exists
     assert (minimal_dbt_project / "CLAUDE.md").exists()
@@ -150,6 +155,22 @@ def test_init_trino_preset(minimal_dbt_project: Path) -> None:
     # Trino is a federated query engine — that word should appear in the additions.
     text = constitution.lower()
     assert "federation" in text or "federated" in text
+
+
+def test_init_bigquery_preset(minimal_dbt_project: Path) -> None:
+    runner = CliRunner()
+    result = runner.invoke(
+        main,
+        ["init", "test", "--warehouse", "bigquery", "--target", str(minimal_dbt_project)],
+    )
+    assert result.exit_code == 0, result.output
+    constitution = (minimal_dbt_project / ".dbt-specify" / "constitution.md").read_text()
+    plan = (
+        minimal_dbt_project / ".dbt-specify" / "templates" / "plan-template.md"
+    ).read_text()
+    assert "BEGIN BIGQUERY ADDITIONS" in constitution
+    assert "partitioning" in constitution.lower()
+    assert "BigQuery-specific concerns" in plan
 
 
 def test_init_existing_claude_md_writes_suggested_file(minimal_dbt_project: Path) -> None:

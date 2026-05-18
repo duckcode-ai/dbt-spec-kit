@@ -46,6 +46,11 @@ Tasks are ordered by dependency: sources → staging → intermediate → marts 
 
 `/dbt.implement` runs one task per invocation. After each task: validate, commit with the task-id message format, and stop. Never work ahead.
 
+Before implementation, run `/dbt.analyze` or `dbt-specify validate project` to confirm the lifecycle
+artifacts are traceable. Before merge, run `/dbt.review`, `dbt parse`, and
+`dbt-specify validate dbt --manifest target/manifest.json` so the final diff has machine-readable
+evidence.
+
 ## The retro (not a separate phase, but mandatory)
 
 After ship, the engineer (or agent under direction) writes a retro covering:

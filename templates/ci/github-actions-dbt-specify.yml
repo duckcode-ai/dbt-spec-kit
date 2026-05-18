@@ -1,0 +1,27 @@
+name: dbt-specify
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  dbt-specify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install dbt-spec-kit
+        run: |
+          python -m pip install --upgrade pip
+          pip install dbt-spec-kit
+      - name: Validate lifecycle
+        run: dbt-specify validate project
+      - name: Parse dbt project
+        run: dbt parse
+      - name: Validate dbt manifest
+        run: dbt-specify validate dbt --manifest target/manifest.json
+      - name: Write dbt-specify report
+        if: always()
+        run: dbt-specify report --format markdown > dbt-specify-report.md
