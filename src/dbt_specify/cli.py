@@ -9,6 +9,14 @@ from dbt_specify._version import __version__
 from dbt_specify.dbt_artifacts import validate_dbt_project
 from dbt_specify.doctor import doctor_project
 from dbt_specify.init import SUPPORTED_WAREHOUSES, init_project
+from dbt_specify.jira import (
+    JiraError,
+    attach_artifacts,
+    create_subtasks_from_tasks,
+    make_jira_client,
+    pull_issue_to_spec,
+    sync_spec_dir,
+)
 from dbt_specify.lifecycle import validate_lifecycle
 from dbt_specify.reporting import ValidationReport, combine_reports
 from dbt_specify.validate import validate_spec
@@ -174,6 +182,177 @@ def ci(target_dir: Path, manifest_path: Path | None) -> None:
     raise SystemExit(combined.exit_code)
 
 
+@main.group()
+def jira() -> None:
+    """Read from and publish dbt-specify artifacts to Jira Cloud."""
+
+
+@jira.command("pull")
+@click.argument("issue_key")
+@click.option(
+    "--target",
+    "target_dir",
+    type=click.Path(file_okay=False, path_type=Path),
+    default=Path("."),
+    help="Target dbt project directory (default: current directory).",
+)
+@click.option(
+    "--slug",
+    default=None,
+    help="Optional slug for the generated specs/<NNN>-<slug>/ directory.",
+)
+@click.option("--force", is_flag=True, help="Overwrite existing generated files when present.")
+def jira_pull(issue_key: str, target_dir: Path, slug: str | None, force: bool) -> None:
+    """Create a local spec draft from a Jira issue."""
+    try:
+        spec_dir = pull_issue_to_spec(
+            client=make_jira_client(),
+            issue_key=issue_key,
+            target_dir=target_dir.resolve(),
+            slug=slug,
+            force=force,
+        )
+    except JiraError as error:
+        click.echo(f"error: {error}", err=True)
+        raise SystemExit(1) from error
+
+    click.echo(f"created {spec_dir / 'spec.md'}")
+    click.echo(f"created {spec_dir / 'jira.yml'}")
+    click.echo("next: review the draft spec, then run /dbt.plan after approval")
+
+
+@jira.command("attach")
+@click.argument("issue_key")
+@click.option("--spec", "spec_path", type=click.Path(dir_okay=False, path_type=Path))
+@click.option("--plan", "plan_path", type=click.Path(dir_okay=False, path_type=Path))
+@click.option("--tasks", "tasks_path", type=click.Path(dir_okay=False, path_type=Path))
+@click.option(
+    "--file",
+    "extra_files",
+    multiple=True,
+    type=click.Path(dir_okay=False, path_type=Path),
+    help="Additional artifact to attach. Can be repeated.",
+)
+@click.option("--no-comment", is_flag=True, help="Do not add a Jira comment after upload.")
+def jira_attach(
+    issue_key: str,
+    spec_path: Path | None,
+    plan_path: Path | None,
+    tasks_path: Path | None,
+    extra_files: tuple[Path, ...],
+    no_comment: bool,
+) -> None:
+    """Attach approved local artifacts to a Jira issue."""
+    files = _artifact_paths(spec_path, plan_path, tasks_path, extra_files)
+    try:
+        uploaded = attach_artifacts(
+            client=make_jira_client(),
+            issue_key=issue_key,
+            files=files,
+            comment=not no_comment,
+        )
+    except JiraError as error:
+        click.echo(f"error: {error}", err=True)
+        raise SystemExit(1) from error
+
+    for filename in uploaded:
+        click.echo(f"attached {filename} to {issue_key}")
+
+
+@jira.command("create-tasks")
+@click.argument("issue_key")
+@click.option(
+    "--from",
+    "tasks_path",
+    required=True,
+    type=click.Path(dir_okay=False, path_type=Path),
+    help="Path to specs/<NNN>-<slug>/tasks.md.",
+)
+@click.option(
+    "--issue-type",
+    "issue_type_name",
+    default="Sub-task",
+    show_default=True,
+    help="Jira issue type to create under the parent issue.",
+)
+@click.option("--include-done", is_flag=True, help="Also create subtasks for checked tasks.")
+@click.option("--dry-run", is_flag=True, help="Print the subtasks that would be created.")
+def jira_create_tasks(
+    issue_key: str,
+    tasks_path: Path,
+    issue_type_name: str,
+    include_done: bool,
+    dry_run: bool,
+) -> None:
+    """Create Jira subtasks from a dbt-specify tasks.md file."""
+    try:
+        results = create_subtasks_from_tasks(
+            client=make_jira_client(),
+            issue_key=issue_key,
+            tasks_path=tasks_path.resolve(),
+            issue_type_name=issue_type_name,
+            include_done=include_done,
+            dry_run=dry_run,
+        )
+    except JiraError as error:
+        click.echo(f"error: {error}", err=True)
+        raise SystemExit(1) from error
+
+    if not results:
+        click.echo("no pending tasks found")
+        return
+    for result in results:
+        if result.created:
+            click.echo(f"created {result.key}: {result.summary}")
+        elif result.key:
+            click.echo(f"skipped existing {result.key}: {result.summary}")
+        else:
+            click.echo(f"would create: {result.summary}")
+
+
+@jira.command("sync")
+@click.argument("issue_key")
+@click.option(
+    "--spec-dir",
+    required=True,
+    type=click.Path(file_okay=False, path_type=Path),
+    help="Path to specs/<NNN>-<slug>/.",
+)
+@click.option(
+    "--issue-type",
+    "issue_type_name",
+    default="Sub-task",
+    show_default=True,
+    help="Jira issue type to create under the parent issue.",
+)
+@click.option("--dry-run", is_flag=True, help="Print task sync actions without writing to Jira.")
+def jira_sync(issue_key: str, spec_dir: Path, issue_type_name: str, dry_run: bool) -> None:
+    """Attach spec/plan and create Jira subtasks for a spec directory."""
+    try:
+        uploaded, subtasks = sync_spec_dir(
+            client=make_jira_client(),
+            issue_key=issue_key,
+            spec_dir=spec_dir.resolve(),
+            issue_type_name=issue_type_name,
+            dry_run=dry_run,
+        )
+    except JiraError as error:
+        click.echo(f"error: {error}", err=True)
+        raise SystemExit(1) from error
+
+    for filename in uploaded:
+        click.echo(f"attached {filename} to {issue_key}")
+    for result in subtasks:
+        if result.created:
+            click.echo(f"created {result.key}: {result.summary}")
+        elif result.key:
+            click.echo(f"skipped existing {result.key}: {result.summary}")
+        else:
+            click.echo(f"would create: {result.summary}")
+    if not uploaded and not subtasks:
+        click.echo("nothing to sync")
+
+
 @main.command()
 def version() -> None:
     """Print the installed version."""
@@ -200,6 +379,17 @@ def _echo_report(report: ValidationReport, output_format: str) -> None:
         click.echo(report.to_json())
         return
     click.echo(report.to_markdown())
+
+
+def _artifact_paths(
+    spec_path: Path | None,
+    plan_path: Path | None,
+    tasks_path: Path | None,
+    extra_files: tuple[Path, ...],
+) -> list[Path]:
+    files = [path for path in (spec_path, plan_path, tasks_path) if path is not None]
+    files.extend(extra_files)
+    return [path.resolve() for path in files]
 
 
 def _path_option(args: tuple[str, ...], flag: str, default: Path) -> Path:

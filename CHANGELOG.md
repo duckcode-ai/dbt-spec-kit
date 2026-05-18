@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.3.0] — 2026-05-18
+
+### Added
+- Jira bridge commands for pulling Jira issues into local specs, attaching approved artifacts, and
+  creating Jira subtasks from `tasks.md`.
+- Jira integration docs and tutorial for enterprise intake workflows.
+
 ### Changed
 - Clarified README and tutorial command examples so one-off `uvx` usage is not mixed with direct
   `dbt-specify` commands unless the CLI is persistently installed.
