@@ -40,7 +40,7 @@ def test_cli_version_prints_package_version() -> None:
     runner = CliRunner()
     result = runner.invoke(main, ["version"])
     assert result.exit_code == 0
-    assert "1.1.0" in result.output
+    assert "1.2.0" in result.output
 
 
 def test_init_help_shows_flags() -> None:

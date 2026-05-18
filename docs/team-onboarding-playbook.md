@@ -26,6 +26,11 @@ Team rules:
 - one task per implementation pass by default
 - CI evidence is part of the PR
 - retros update team context instead of relying on memory
+- choose a spec retention model before the first production PR
+
+Recommended default: balanced retention. Keep `spec.md`, `plan.md`, and review/report evidence in
+`main`; keep `tasks.md` for complex, regulated, or high-risk work. See
+[Spec retention and repo hygiene](spec-retention-and-repo-hygiene.md).
 
 ## Week 1: adopt without disrupting production
 
@@ -74,6 +79,7 @@ Use this agenda for a team rollout meeting:
 - [ ] `CLAUDE.md` merged or reconciled
 - [ ] First spec approved by a human reviewer
 - [ ] First plan approved before implementation
+- [ ] Spec retention model chosen
 - [ ] `dbt-specify report` attached to first PR
 - [ ] Retros used to improve team context
 - [ ] `dbt-specify ci` promoted when the team is ready

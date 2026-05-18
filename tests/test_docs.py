@@ -111,6 +111,41 @@ def test_warehouse_guides_exist_for_supported_presets() -> None:
         assert warehouse in getting_started
 
 
+def test_spec_retention_guidance_is_documented() -> None:
+    guide_path = ROOT / "docs" / "spec-retention-and-repo-hygiene.md"
+    assert guide_path.exists()
+    _assert_local_links_exist(guide_path)
+
+    readme = (ROOT / "README.md").read_text()
+    guide = guide_path.read_text()
+    claude_template = (ROOT / "templates" / "CLAUDE.md.template").read_text()
+
+    assert "docs/spec-retention-and-repo-hygiene.md" in readme
+    assert "Balanced default" in guide
+    assert "Full audit" in guide
+    assert "Lean" in guide
+    assert "raw agent scratch notes" in guide
+    assert "Spec retention" in claude_template
+    assert "Default to balanced retention" in claude_template
+    assert "Do not commit raw agent scratch notes" in claude_template
+
+
+def test_readme_highlights_enterprise_adoption_choices() -> None:
+    readme = (ROOT / "README.md").read_text()
+
+    assert "Enterprise adoption choices" in readme
+    assert "Spec folder structure" in readme
+    assert "Development workflow" in readme
+    assert "Repo retention" in readme
+    assert "Brownfield rollout" in readme
+    assert "Agent knowledge" in readme
+    assert "Warehouse guidance" in readme
+    assert "CI evidence" in readme
+    assert "keep approved decision records, not raw agent scratch work" in readme
+    assert "001-core-customer-segmentation" in readme
+    assert "not as nested folders" in readme
+
+
 def test_tutorials_cover_enterprise_onboarding_path() -> None:
     tutorials_dir = ROOT / "docs" / "tutorials"
     required_paths = [

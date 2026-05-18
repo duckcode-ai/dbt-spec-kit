@@ -27,6 +27,22 @@ Idea -> spec.md -> plan.md -> tasks.md -> dbt changes -> CI report -> review
 The default is controlled autonomy. Agents can draft and implement, but humans approve the spec, the
 plan, and the final diff.
 
+## Enterprise adoption choices
+
+Most teams should start with these defaults, then tighten or relax them as their governance needs
+become clear.
+
+| Decision | Recommended default | Deep dive |
+|---|---|---|
+| Development workflow | Use the four-phase loop: specify, plan, tasks, implement. Keep human approval at the spec, plan, and final review gates. | [Methodology](docs/methodology.md) |
+| Repo retention | Use balanced retention: merge `spec.md`, `plan.md`, and review/report evidence; keep `tasks.md` for complex, regulated, or high-risk work. | [Spec retention and repo hygiene](docs/spec-retention-and-repo-hygiene.md) |
+| Brownfield rollout | Add the methodology layer first, capture existing conventions, and prove the flow on one low-risk dbt change before broad rollout. | [Brownfield onboarding](docs/brownfield-onboarding.md), [Team onboarding playbook](docs/team-onboarding-playbook.md) |
+| Agent knowledge | Use dbt Labs skills for dbt mechanics. Use dbt-spec-kit skills and sub-agent roles for business meaning, planning, governance, and review evidence. | [Skills and sub-agents](docs/skills-and-sub-agents.md) |
+| Warehouse guidance | Pick the closest warehouse preset for cost, materialization, SQL dialect, and governance guardrails. The project still runs through your normal dbt adapter and database connection. | [Warehouse guides](docs/warehouse-guides) |
+| CI evidence | Start with local `validate` and `report`; promote `dbt-specify ci` when the team wants lifecycle checks to block PRs. | [Enterprise CI](docs/enterprise-ci.md) |
+
+The key repo hygiene rule: keep approved decision records, not raw agent scratch work.
+
 ## Try it with jaffle-shop
 
 The fastest way to understand the workflow is to apply it to the upstream
@@ -90,6 +106,28 @@ Running `dbt-specify init` in an existing dbt project creates:
 - `CLAUDE.md` or `CLAUDE.md.dbt-specify-suggested`
 - `specs/` for feature-level SDLC artifacts
 
+## Spec folder structure
+
+Use one direct child folder under `specs/` for each meaningful dbt change:
+
+```text
+specs/
+  001-core-customer-segmentation/
+    spec.md
+    plan.md
+    tasks.md
+    review.md
+    findings.md
+```
+
+The folder name should be `<NNN>-<domain>-<slug>` when the team is large enough to need domain
+visibility. Keep domain names in the slug, not as nested folders. `dbt-specify validate project`
+treats each direct `specs/*/` child as a feature spec directory.
+
+`spec.md` is required. `plan.md` is added after spec approval. `tasks.md` is added after plan
+approval. Review, governance, findings, and retro files are optional decision records governed by
+your team's [spec retention policy](docs/spec-retention-and-repo-hygiene.md).
+
 ## Skills vs sub-agents
 
 Skills are reusable knowledge. They teach an agent how to do a category of work better, such as
@@ -138,6 +176,7 @@ Use `dbt-specify ci` when the lifecycle and dbt artifact checks should block a P
 - [Jaffle-shop AI SDLC walkthrough](docs/jaffle-shop-ai-sdlc-walkthrough.md)
 - [Team onboarding playbook](docs/team-onboarding-playbook.md)
 - [Methodology](docs/methodology.md)
+- [Spec retention and repo hygiene](docs/spec-retention-and-repo-hygiene.md)
 - [Skills and sub-agents](docs/skills-and-sub-agents.md)
 - [Enterprise CI](docs/enterprise-ci.md)
 - [Brownfield onboarding](docs/brownfield-onboarding.md)
