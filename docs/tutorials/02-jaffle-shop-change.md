@@ -81,6 +81,14 @@ Good tasks are small:
 
 The implementation agent should complete one checked task and stop.
 
+For a short demo with a reviewed plan, you can use:
+
+```text
+/dbt.implement-all
+```
+
+It still runs tasks sequentially and stops if validation fails or the file scope changes.
+
 ## 6. Validate and review
 
 Run:

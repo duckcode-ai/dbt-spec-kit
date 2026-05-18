@@ -73,7 +73,9 @@ In your AI agent, invoke `/dbt.specify <description of the feature>`. The agent 
 3. Draft `specs/001-<slug>/spec.md`
 4. Tell you to review
 
-Once you approve, run `/dbt.plan` to get a plan, then `/dbt.tasks` to break it down, then `/dbt.implement` to execute one task at a time.
+Once you approve, run `/dbt.plan` to get a plan, then `/dbt.tasks` to break it down, then
+`/dbt.implement` to execute one task at a time. For small approved plans, `/dbt.implement-all` can
+run pending tasks sequentially while stopping on validation failures or scope changes.
 
 Validate your spec is EARS-conformant:
 

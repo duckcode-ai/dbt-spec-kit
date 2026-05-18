@@ -25,6 +25,7 @@ Core commands map to the phases:
 - `/dbt.plan` — reads the current spec and proposes a plan
 - `/dbt.tasks` — decomposes the approved plan into ordered tasks
 - `/dbt.implement` — executes the next task
+- `/dbt.implement-all` — executes approved pending tasks sequentially with validation checkpoints
 - `/dbt.analyze` — checks spec/plan/task traceability before implementation
 - `/dbt.review` — reviews the final diff against the approved plan
 

@@ -64,6 +64,9 @@ T1. Stop after validation evidence is recorded.
 
 Do not run two implementation agents against the same model or YAML file.
 
+For small, approved plans, `/dbt.implement-all` can process pending tasks in order. It must still
+commit after each task and stop on validation failure, unclear scope, or unapproved files.
+
 ## 5. Review final evidence
 
 Before merge:

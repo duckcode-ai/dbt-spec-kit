@@ -69,6 +69,7 @@ def test_init_creates_dbt_specify_dir(minimal_dbt_project: Path) -> None:
     # Commands and skills directories created
     assert (minimal_dbt_project / ".dbt-specify" / "commands").is_dir()
     assert (minimal_dbt_project / ".dbt-specify" / "commands" / "dbt.analyze.md").exists()
+    assert (minimal_dbt_project / ".dbt-specify" / "commands" / "dbt.implement-all.md").exists()
     assert (minimal_dbt_project / ".dbt-specify" / "commands" / "dbt.review.md").exists()
     assert (minimal_dbt_project / ".dbt-specify" / "skills").is_dir()
     agents_dir = minimal_dbt_project / ".dbt-specify" / "agents"
