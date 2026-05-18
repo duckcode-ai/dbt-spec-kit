@@ -29,8 +29,11 @@ use jaffle-shop for BigQuery demos:
 
 ```bash
 uvx --from dbt-spec-kit dbt-specify init jaffle-shop --warehouse bigquery
-dbt-specify doctor
+uvx --from dbt-spec-kit dbt-specify doctor
 ```
+
+If you installed the CLI with `uv tool install dbt-spec-kit`, you can use `dbt-specify doctor`
+directly instead.
 
 ## 3. Start from a business request
 
@@ -94,10 +97,10 @@ It still runs tasks sequentially and stops if validation fails or the file scope
 Run:
 
 ```bash
-dbt-specify validate project
+uvx --from dbt-spec-kit dbt-specify validate project
 dbt parse
-dbt-specify validate dbt --manifest target/manifest.json
-dbt-specify report --format markdown
+uvx --from dbt-spec-kit dbt-specify validate dbt --manifest target/manifest.json
+uvx --from dbt-spec-kit dbt-specify report --format markdown
 ```
 
 Then ask:

@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- Clarified README and tutorial command examples so one-off `uvx` usage is not mixed with direct
+  `dbt-specify` commands unless the CLI is persistently installed.
+
 ## [1.2.0] — 2026-05-18
 
 ### Added
