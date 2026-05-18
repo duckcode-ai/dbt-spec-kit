@@ -11,6 +11,20 @@ from dbt_specify.templates_loader import asset_dir
 # Filter junk that may live in the source tree during editable installs
 # (macOS Finder leftovers, pyc caches, etc.) so user-visible output stays clean.
 _IGNORE_JUNK = shutil.ignore_patterns(".DS_Store", "__pycache__", "*.pyc", ".gitkeep")
+SUPPORTED_WAREHOUSES = (
+    "snowflake",
+    "databricks",
+    "trino",
+    "bigquery",
+    "redshift",
+    "postgres",
+    "sqlserver",
+    "azure-sql",
+    "mysql",
+    "duckdb",
+    "motherduck",
+    "athena",
+)
 
 
 def init_project(
@@ -30,7 +44,7 @@ def init_project(
     Raises:
         SystemExit: On any precondition failure.
     """
-    if warehouse not in {"snowflake", "databricks", "trino", "bigquery"}:
+    if warehouse not in SUPPORTED_WAREHOUSES:
         click.echo(f"error: unknown warehouse '{warehouse}'", err=True)
         raise SystemExit(2)
 

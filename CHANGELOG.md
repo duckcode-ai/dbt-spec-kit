@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- Warehouse presets and guides for Redshift, Postgres, SQL Server, Azure SQL, MySQL, DuckDB,
+  MotherDuck, and Athena.
+
 ## [1.1.0] — 2026-05-18
 
 ### Added

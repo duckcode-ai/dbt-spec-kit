@@ -75,7 +75,8 @@ uv tool install dbt-spec-kit
 dbt-specify --version
 ```
 
-Supported warehouse presets: `snowflake`, `databricks`, `trino`, and `bigquery`.
+Supported warehouse presets: `snowflake`, `databricks`, `trino`, `bigquery`, `redshift`,
+`postgres`, `sqlserver`, `azure-sql`, `mysql`, `duckdb`, `motherduck`, and `athena`.
 
 ## What init adds
 
@@ -145,6 +146,14 @@ Use `dbt-specify ci` when the lifecycle and dbt artifact checks should block a P
 - [Databricks guide](docs/warehouse-guides/databricks.md)
 - [Trino guide](docs/warehouse-guides/trino.md)
 - [BigQuery guide](docs/warehouse-guides/bigquery.md)
+- [Redshift guide](docs/warehouse-guides/redshift.md)
+- [Postgres guide](docs/warehouse-guides/postgres.md)
+- [SQL Server guide](docs/warehouse-guides/sqlserver.md)
+- [Azure SQL guide](docs/warehouse-guides/azure-sql.md)
+- [MySQL guide](docs/warehouse-guides/mysql.md)
+- [DuckDB guide](docs/warehouse-guides/duckdb.md)
+- [MotherDuck guide](docs/warehouse-guides/motherduck.md)
+- [Athena guide](docs/warehouse-guides/athena.md)
 
 ## OSS project
 

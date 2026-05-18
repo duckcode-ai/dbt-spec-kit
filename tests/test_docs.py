@@ -83,6 +83,19 @@ def test_skills_and_sub_agents_doc_covers_composition() -> None:
         assert role in text
 
 
+def test_warehouse_guides_exist_for_supported_presets() -> None:
+    from dbt_specify.init import SUPPORTED_WAREHOUSES
+
+    readme = (ROOT / "README.md").read_text()
+    getting_started = (ROOT / "docs" / "getting-started.md").read_text()
+    for warehouse in SUPPORTED_WAREHOUSES:
+        guide = ROOT / "docs" / "warehouse-guides" / f"{warehouse}.md"
+        assert guide.exists(), f"Missing warehouse guide: {guide.relative_to(ROOT)}"
+        assert f"--warehouse {warehouse}" in guide.read_text()
+        assert warehouse in readme
+        assert warehouse in getting_started
+
+
 def test_tutorials_cover_enterprise_onboarding_path() -> None:
     tutorials_dir = ROOT / "docs" / "tutorials"
     required_paths = [
