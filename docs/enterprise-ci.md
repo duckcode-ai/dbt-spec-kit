@@ -40,3 +40,13 @@ artifact checks.
 See `.dbt-specify/templates/ci/github-actions-dbt-specify.yml` after running init, or
 `templates/ci/github-actions-dbt-specify.yml` in this repo, for a reusable starting point. The
 workflow assumes your dbt adapter and dbt profile are already available through your CI setup.
+
+## PR evidence example
+
+For the jaffle-shop semantic mart walkthrough, the PR should include:
+
+- approved `specs/001-customer-segmentation/spec.md`
+- approved `plan.md` and `tasks.md`
+- `dbt parse` evidence showing semantic models, metrics, and saved queries still resolve
+- `dbt-specify-report.md` generated with `dbt-specify report --format markdown`
+- reviewer sign-off for metric compatibility and downstream impact
