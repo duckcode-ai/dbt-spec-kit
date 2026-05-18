@@ -2,10 +2,10 @@
 
 Thanks for considering a contribution. This project is small on purpose — the most useful contributions are:
 
-1. **A new warehouse preset** (BigQuery, Redshift, or any other modern adapter). Follow the structure in `presets/snowflake/` (or `presets/trino/` if your target is more like a federated query engine than a warehouse).
+1. **A new warehouse preset** (Redshift or any other modern adapter). Follow the structure in `presets/snowflake/` (or `presets/trino/` if your target is more like a federated query engine than a warehouse).
 2. **A tier-3 skill** for a specific data domain. See `skills/writing-business-glossary-specs/SKILL.md` for the pattern.
 3. **A real-world worked example** from your dbt project, anonymized.
-4. **Bug fixes** to the EARS validator (especially false positives on valid specs).
+4. **Bug fixes** to lifecycle, dbt artifact, and EARS validators.
 
 ## Local setup
 

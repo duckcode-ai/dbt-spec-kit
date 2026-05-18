@@ -41,6 +41,8 @@ This creates:
 - `CLAUDE.md` — the agent orientation file (or `CLAUDE.md.dbt-specify-suggested` if you already have one)
 - `specs/` — empty directory for your first spec
 
+Supported warehouse presets: `snowflake`, `databricks`, `trino`, and `bigquery`.
+
 ## Compose with dbt-labs/dbt-agent-skills
 
 Install dbt-agent-skills separately to cover the "how does dbt work" tier:
@@ -70,6 +72,21 @@ Validate your spec is EARS-conformant:
 
 ```bash
 dbt-specify validate specs/001-<slug>/spec.md
+```
+
+Before implementation or review, validate the lifecycle and dbt artifacts:
+
+```bash
+dbt-specify validate project
+dbt parse
+dbt-specify validate dbt --manifest target/manifest.json
+dbt-specify report --format markdown
+```
+
+For an existing dbt repo, start with:
+
+```bash
+dbt-specify doctor
 ```
 
 ## Next steps

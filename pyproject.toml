@@ -4,15 +4,15 @@ build-backend = "hatchling.build"
 
 [project]
 name = "dbt-spec-kit"
-version = "0.1.0"
-description = "Spec-driven development toolkit for dbt-centric data engineering, with warehouse-specific presets for Snowflake, Databricks, and Trino."
+version = "1.0.0"
+description = "Enterprise AI SDLC toolkit for dbt projects, with spec-driven workflows, CI validation, and warehouse-specific presets."
 readme = "README.md"
 license = { file = "LICENSE" }
 requires-python = ">=3.11"
 authors = [
     { name = "duckcode-ai", email = "open-source@duckcode.ai" }
 ]
-keywords = ["dbt", "spec-driven-development", "ai-agents", "analytics-engineering", "snowflake", "databricks", "trino"]
+keywords = ["dbt", "spec-driven-development", "ai-agents", "analytics-engineering", "snowflake", "databricks", "trino", "bigquery"]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",

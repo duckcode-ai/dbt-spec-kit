@@ -19,12 +19,14 @@ After ship, write a retro to the same spec directory.
 
 ## Slash commands
 
-Four commands map to the phases:
+Core commands map to the phases:
 
 - `/dbt.specify <feature description>` — drafts a spec from a prompt
 - `/dbt.plan` — reads the current spec and proposes a plan
 - `/dbt.tasks` — decomposes the approved plan into ordered tasks
 - `/dbt.implement` — executes the next task
+- `/dbt.analyze` — checks spec/plan/task traceability before implementation
+- `/dbt.review` — reviews the final diff against the approved plan
 
 See `.dbt-specify/commands/` for the prompts.
 
@@ -56,5 +58,7 @@ The non-negotiable principles for this project are in `.dbt-specify/constitution
 
 - Always read `.dbt-specify/constitution.md` first.
 - Never skip a phase. Always produce a spec, then a plan, then tasks, before code.
+- Run `dbt-specify validate project` before implementation and review.
+- Run `dbt-specify validate dbt` after `dbt parse` when `target/manifest.json` exists.
 - Surface drift, don't fix it silently. If you notice a convention is being broken or a deprecated pattern is being used elsewhere, write it to `specs/<current>/findings.md` — do not edit unrelated files.
 - All proposed changes must trace to an AC in the spec.
