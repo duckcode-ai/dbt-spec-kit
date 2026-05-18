@@ -57,6 +57,32 @@ def test_release_workflow_uses_trusted_publishing() -> None:
     assert "python -m twine check dist/*" in workflow
 
 
+def test_skills_and_sub_agents_doc_covers_composition() -> None:
+    text = (ROOT / "docs" / "skills-and-sub-agents.md").read_text()
+    assert "dbt-labs/dbt-agent-skills" in text
+    assert "Do not vendor dbt Labs skills" in text
+    assert "not slash commands" in text
+    assert "/plugin marketplace add dbt-labs/dbt-agent-skills" in text
+    assert "/plugin install dbt@dbt-agent-marketplace" in text
+    assert "npx skills add dbt-labs/dbt-agent-skills" in text
+    assert "tessl install dbt-labs/dbt-agent-skills" in text
+    assert "using-dbt-for-analytics-engineering" in text
+    assert "adding-dbt-unit-test" in text
+    assert "building-dbt-semantic-layer" in text
+    assert "working-with-dbt-mesh" in text
+    assert "running-dbt-commands" in text
+    assert "fetching-dbt-docs" in text
+    for role in (
+        "spec-steward",
+        "dbt-architect",
+        "warehouse-optimizer",
+        "implementation-agent",
+        "governance-reviewer",
+        "review-agent",
+    ):
+        assert role in text
+
+
 def _markdown_links(text: str) -> list[str]:
     return re.findall(r"(?<!!)\[[^\]]+\]\(([^)]+)\)", text)
 

@@ -40,6 +40,12 @@ def doctor_project(target_dir: Path) -> ValidationReport:
             "No specs/ directory found. New work will not be traceable.",
         ),
         (
+            target_dir / ".dbt-specify" / "agents",
+            "AGENTS_DIR_MISSING",
+            "No .dbt-specify/agents/ directory found. Run `dbt-specify init --force` "
+            "or copy the role templates before delegating sub-agent work.",
+        ),
+        (
             target_dir / "target" / "manifest.json",
             "MANIFEST_MISSING",
             "No target/manifest.json found. Run `dbt parse` for artifact-aware checks.",

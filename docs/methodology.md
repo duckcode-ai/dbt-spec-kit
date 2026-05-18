@@ -19,6 +19,8 @@ Each phase has a **human checkpoint**. No phase skips, no auto-merge.
 The spec answers: what problem, who's affected, what's the result, what are the acceptance criteria, what's out of scope, what are the constraints. ACs are EARS-formatted and validatable with `dbt-specify validate`.
 
 If the spec describes a staging model, use the `writing-staging-model-specs` skill. For mart-level work, use `writing-mart-specs-with-grain`. For anything involving entities that span systems, also use `writing-business-glossary-specs`.
+When a separate worker drafts the spec, use `.dbt-specify/agents/spec-steward.md` as its handoff
+contract.
 
 ## Phase 2: Plan
 
@@ -29,6 +31,9 @@ If the spec describes a staging model, use the `writing-staging-model-specs` ski
 The plan enumerates every file that will be added, modified, or deleted; the tests for each AC; the warehouse-specific concerns (clustering, masking, governance, cost guardrails); and the downstream impact (semantic-layer metrics, exposures, reverse-ETL).
 
 The warehouse preset's plan additions are appended automatically by `dbt-specify init`. Fill in the warehouse-specific tables before the plan is approved.
+Use `.dbt-specify/agents/dbt-architect.md`, `.dbt-specify/agents/warehouse-optimizer.md`, and
+`.dbt-specify/agents/governance-reviewer.md` for bounded review of design, warehouse, and policy
+questions.
 
 ## Phase 3: Tasks
 
@@ -45,11 +50,17 @@ Tasks are ordered by dependency: sources → staging → intermediate → marts 
 **Human checkpoint:** the engineer reviews and approves the final diff before merge.
 
 `/dbt.implement` runs one task per invocation. After each task: validate, commit with the task-id message format, and stop. Never work ahead.
+If delegated, the implementation worker follows `.dbt-specify/agents/implementation-agent.md` and
+may edit only files listed in the approved plan.
 
 Before implementation, run `/dbt.analyze` or `dbt-specify validate project` to confirm the lifecycle
 artifacts are traceable. Before merge, run `/dbt.review`, `dbt parse`, and
 `dbt-specify validate dbt --manifest target/manifest.json` so the final diff has machine-readable
 evidence.
+Use `.dbt-specify/agents/review-agent.md` when delegating final review.
+
+See [Skills and sub-agents](skills-and-sub-agents.md) for the difference between reusable skills and
+bounded sub-agent roles.
 
 ## The retro (not a separate phase, but mandatory)
 

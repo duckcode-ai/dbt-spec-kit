@@ -51,8 +51,7 @@ If you are using dbt Cloud, run the equivalent steps in the Cloud IDE or Cloud C
 Choose the preset that matches your warehouse:
 
 ```bash
-uvx --from git+https://github.com/duckcode-ai/dbt-spec-kit.git \
-  dbt-specify init jaffle-shop --warehouse bigquery
+uvx --from dbt-spec-kit dbt-specify init jaffle-shop --warehouse bigquery
 ```
 
 For Snowflake, Databricks, or Trino, replace `bigquery` with the matching preset.
@@ -63,8 +62,9 @@ Run the brownfield diagnostic:
 dbt-specify doctor
 ```
 
-Expected result: doctor reports adoption status for `.dbt-specify/`, `CLAUDE.md`, `specs/`, model
-inventory, and `target/manifest.json`. This is a readiness check, not a dbt model change.
+Expected result: doctor reports adoption status for `.dbt-specify/`, `.dbt-specify/agents/`,
+`CLAUDE.md`, `specs/`, model inventory, and `target/manifest.json`. This is a readiness check, not
+a dbt model change.
 
 ## 3. Demo story: semantic customer segmentation
 

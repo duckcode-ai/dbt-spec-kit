@@ -10,8 +10,8 @@ cd path/to/dbt-project
 dbt-specify doctor
 ```
 
-The doctor command reports missing adoption pieces such as `.dbt-specify/`, `CLAUDE.md`, `specs/`,
-`target/manifest.json`, and model documentation/test inventory.
+The doctor command reports missing adoption pieces such as `.dbt-specify/`, `CLAUDE.md`,
+`.dbt-specify/agents/`, `specs/`, `target/manifest.json`, and model documentation/test inventory.
 
 If your team wants a low-risk practice run first, use the
 [jaffle-shop AI SDLC walkthrough](jaffle-shop-ai-sdlc-walkthrough.md). It shows the same adoption

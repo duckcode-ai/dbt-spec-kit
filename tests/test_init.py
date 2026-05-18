@@ -11,7 +11,7 @@ from dbt_specify.templates_loader import asset_dir, load_template
 
 def test_asset_dir_resolves_all_known_kinds() -> None:
     """Every kind named in templates_loader must resolve to an on-disk directory."""
-    for kind in ("memory", "templates", "presets", "skills", "commands"):
+    for kind in ("memory", "templates", "presets", "skills", "commands", "agents"):
         path = asset_dir(kind)
         assert path.is_dir(), f"asset kind '{kind}' did not resolve to a directory"
 
@@ -39,7 +39,7 @@ def test_cli_version_prints_package_version() -> None:
     runner = CliRunner()
     result = runner.invoke(main, ["version"])
     assert result.exit_code == 0
-    assert "1.0.0" in result.output
+    assert "1.1.0" in result.output
 
 
 def test_init_help_shows_flags() -> None:
@@ -68,6 +68,17 @@ def test_init_creates_dbt_specify_dir(minimal_dbt_project: Path) -> None:
     assert (minimal_dbt_project / ".dbt-specify" / "commands" / "dbt.analyze.md").exists()
     assert (minimal_dbt_project / ".dbt-specify" / "commands" / "dbt.review.md").exists()
     assert (minimal_dbt_project / ".dbt-specify" / "skills").is_dir()
+    agents_dir = minimal_dbt_project / ".dbt-specify" / "agents"
+    assert agents_dir.is_dir()
+    for agent_name in (
+        "spec-steward",
+        "dbt-architect",
+        "warehouse-optimizer",
+        "implementation-agent",
+        "governance-reviewer",
+        "review-agent",
+    ):
+        assert (agents_dir / f"{agent_name}.md").exists()
     # CLAUDE.md is written when none exists
     assert (minimal_dbt_project / "CLAUDE.md").exists()
     # specs/ directory created
