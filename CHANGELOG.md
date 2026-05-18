@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Jaffle-shop AI SDLC walkthrough using the upstream dbt Labs project as the onboarding demo.
 - Team onboarding playbook for introducing dbt-spec-kit to analytics engineering teams.
 - Documentation tests for README links, walkthrough commands, and OSS file presence.
+- PyPI Trusted Publishing release workflow and maintainer release runbook.
 
 ### Changed
 - Reworked README around the jaffle-shop quickstart, team adoption path, and CI trust boundary.

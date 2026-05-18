@@ -24,6 +24,14 @@ All three must pass before opening a PR.
 
 Use the pull request template and include the smallest reproducible example for behavior changes.
 
+## Release changes
+
+Release PRs must keep `pyproject.toml`, `CHANGELOG.md`, and the Git tag aligned. Publishing is
+handled by `.github/workflows/release.yml` through PyPI Trusted Publishing, so maintainers should
+not add PyPI API tokens or passwords to GitHub secrets.
+
+See `docs/releasing.md` for the full release runbook.
+
 ## How to add a warehouse preset
 
 1. Create `presets/<warehouse>/constitution-additions.md`. Append-only — do not repeal base principles.
