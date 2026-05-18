@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- Tutorial series covering initialization, jaffle-shop, brownfield enterprise adoption, and
+  skills/sub-agent handoffs.
+- README explanation of skills versus sub-agents.
+
 ## [1.1.0] — 2026-05-18
 
 ### Added

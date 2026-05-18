@@ -89,6 +89,17 @@ Running `dbt-specify init` in an existing dbt project creates:
 - `CLAUDE.md` or `CLAUDE.md.dbt-specify-suggested`
 - `specs/` for feature-level SDLC artifacts
 
+## Skills vs sub-agents
+
+Skills are reusable knowledge. They teach an agent how to do a category of work better, such as
+writing mart specs with grain, checking PII access rules, or using dbt Labs guidance for unit tests.
+
+Sub-agents are bounded workers. Their templates define the mission, required context, allowed edit
+paths, forbidden files, and output contract for a specific handoff.
+
+Use dbt Labs skills for dbt framework mechanics. Use dbt-spec-kit skills and sub-agent roles for the
+enterprise delivery workflow around specs, plans, governance, warehouse guardrails, and CI evidence.
+
 The agent commands are:
 
 - `/dbt.specify` drafts the requirement.
@@ -121,6 +132,7 @@ Use `dbt-specify ci` when the lifecycle and dbt artifact checks should block a P
 ## Docs
 
 - [Getting started](docs/getting-started.md)
+- [Tutorials](docs/tutorials/README.md)
 - [Jaffle-shop AI SDLC walkthrough](docs/jaffle-shop-ai-sdlc-walkthrough.md)
 - [Team onboarding playbook](docs/team-onboarding-playbook.md)
 - [Methodology](docs/methodology.md)
