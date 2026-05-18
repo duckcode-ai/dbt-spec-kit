@@ -1,6 +1,6 @@
 # Getting started with dbt-spec-kit
 
-Five-minute install + your first spec.
+Five-minute install plus your first spec-driven dbt workflow.
 
 ## Prerequisites
 
@@ -91,6 +91,8 @@ dbt-specify doctor
 
 ## Next steps
 
+- Try the [jaffle-shop AI SDLC walkthrough](jaffle-shop-ai-sdlc-walkthrough.md) to see the process on a real dbt Labs project.
+- Use the [team onboarding playbook](team-onboarding-playbook.md) when presenting the workflow to an analytics engineering team.
 - Read [methodology.md](methodology.md) for the full four-phase loop.
 - Read [warehouse-guides/snowflake.md](warehouse-guides/snowflake.md) or [databricks.md](warehouse-guides/databricks.md) for your warehouse's preset.
 - See [`examples/jaffle-shop-staging-overhaul/`](../examples/jaffle-shop-staging-overhaul/) for a complete worked example.

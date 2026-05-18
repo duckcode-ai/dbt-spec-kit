@@ -6,6 +6,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- Launch-ready OSS project files: issue templates, pull request template, SECURITY, SUPPORT, and ROADMAP.
+- Jaffle-shop AI SDLC walkthrough using the upstream dbt Labs project as the onboarding demo.
+- Team onboarding playbook for introducing dbt-spec-kit to analytics engineering teams.
+- Documentation tests for README links, walkthrough commands, and OSS file presence.
+
+### Changed
+- Reworked README around the jaffle-shop quickstart, team adoption path, and CI trust boundary.
+- Connected getting-started, brownfield onboarding, enterprise CI, and contributing docs to the new OSS onboarding flow.
+
 ## [1.0.0] — 2026-05-18
 
 ### Added

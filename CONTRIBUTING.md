@@ -1,11 +1,12 @@
 # Contributing to dbt-spec-kit
 
-Thanks for considering a contribution. This project is small on purpose — the most useful contributions are:
+Thanks for considering a contribution. The most useful contributions are:
 
 1. **A new warehouse preset** (Redshift or any other modern adapter). Follow the structure in `presets/snowflake/` (or `presets/trino/` if your target is more like a federated query engine than a warehouse).
-2. **A tier-3 skill** for a specific data domain. See `skills/writing-business-glossary-specs/SKILL.md` for the pattern.
-3. **A real-world worked example** from your dbt project, anonymized.
-4. **Bug fixes** to lifecycle, dbt artifact, and EARS validators.
+2. **A real-world worked example** from an anonymized dbt project.
+3. **A validator improvement** for lifecycle artifacts, dbt manifests, semantic models, or warehouse policies.
+4. **A tier-3 skill** for a business domain. See `skills/writing-business-glossary-specs/SKILL.md` for the pattern.
+5. **Documentation improvements** that make team onboarding easier.
 
 ## Local setup
 
@@ -20,6 +21,8 @@ mypy src
 ```
 
 All three must pass before opening a PR.
+
+Use the pull request template and include the smallest reproducible example for behavior changes.
 
 ## How to add a warehouse preset
 

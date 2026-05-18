@@ -13,6 +13,10 @@ dbt-specify doctor
 The doctor command reports missing adoption pieces such as `.dbt-specify/`, `CLAUDE.md`, `specs/`,
 `target/manifest.json`, and model documentation/test inventory.
 
+If your team wants a low-risk practice run first, use the
+[jaffle-shop AI SDLC walkthrough](jaffle-shop-ai-sdlc-walkthrough.md). It shows the same adoption
+steps on the upstream dbt Labs example project before you apply the process to production code.
+
 ## 2. Initialize the methodology layer
 
 ```bash
@@ -45,3 +49,5 @@ dbt-specify report --format markdown
 
 Use the report as PR evidence first. Once false positives are fixed and team conventions are clear,
 switch to `dbt-specify ci` as a required check.
+
+For a rollout meeting format, see the [team onboarding playbook](team-onboarding-playbook.md).

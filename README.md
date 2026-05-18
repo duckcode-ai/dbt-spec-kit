@@ -1,96 +1,145 @@
 # dbt-spec-kit
 
-> Enterprise AI SDLC for dbt — specs as contracts, agents as implementers, CI as the trust boundary.
+> AI SDLC for dbt teams: specs are contracts, agents do bounded implementation, and CI proves the
+> work followed the plan.
 
-Modeled on [github/spec-kit](https://github.com/github/spec-kit). Composes with [dbt-labs/dbt-agent-skills](https://github.com/dbt-labs/dbt-agent-skills). Works with Claude Code, Cursor, GitHub Copilot, Gemini CLI, Cline, and any agent that reads markdown context.
+dbt-spec-kit helps analytics engineering teams use AI coding agents safely inside real dbt projects.
+It adds a lightweight spec-driven workflow, warehouse-aware planning templates, agent prompts, and
+CI validation to an existing dbt repo.
 
-## Why this exists
+It is modeled on [GitHub Spec Kit](https://github.com/github/spec-kit), composes with
+[dbt-labs/dbt-agent-skills](https://github.com/dbt-labs/dbt-agent-skills), and works with any agent
+that reads markdown context, including Claude Code, Codex, Cursor, GitHub Copilot, Gemini CLI, and
+Cline.
 
-AI coding agents are powerful but vague. "Build a customer mart" gets you wildly different output depending on agent context. dbt-spec-kit fixes that by making **specs the source of truth**: written once, agent-readable, warehouse-aware, and enforceable in CI.
+## Why teams use it
 
-Four phases, one human checkpoint per phase, never auto-merge.
+AI agents are useful, but "build a customer mart" is too vague for enterprise dbt work. A safe dbt
+change needs grain, source contracts, tests, semantic-layer impact, downstream consumers, warehouse
+cost decisions, and human approval points.
 
+dbt-spec-kit turns that into a repeatable loop:
+
+```text
+Idea -> spec.md -> plan.md -> tasks.md -> dbt changes -> CI report -> review
 ```
-Specify  →  Plan  →  Tasks  →  Implement
-   ↑                                |
-   └──────────  retro  ←────────────┘
+
+The default is controlled autonomy. Agents can draft and implement, but humans approve the spec, the
+plan, and the final diff.
+
+## Try it with jaffle-shop
+
+The fastest way to understand the workflow is to apply it to the upstream
+[dbt-labs/jaffle-shop](https://github.com/dbt-labs/jaffle-shop) project.
+
+```bash
+git clone https://github.com/dbt-labs/jaffle-shop.git
+cd jaffle-shop
+
+uvx --from git+https://github.com/duckcode-ai/dbt-spec-kit.git \
+  dbt-specify init jaffle-shop --warehouse bigquery
+
+dbt-specify doctor
 ```
+
+Then use your AI agent:
+
+```text
+/dbt.specify Add a customer segmentation field to the customers mart without breaking existing metrics.
+/dbt.plan
+/dbt.tasks
+/dbt.implement
+/dbt.review
+```
+
+See the full walkthrough: [Jaffle-shop AI SDLC walkthrough](docs/jaffle-shop-ai-sdlc-walkthrough.md).
 
 ## Install
 
 Requires Python 3.11+. Recommended via [uv](https://docs.astral.sh/uv/):
 
 ```bash
-uvx --from git+https://github.com/duckcode-ai/dbt-spec-kit.git dbt-specify init my-project --warehouse snowflake
+uvx --from git+https://github.com/duckcode-ai/dbt-spec-kit.git \
+  dbt-specify init my-project --warehouse snowflake
 ```
 
-Or persistent install:
+Persistent install:
 
 ```bash
 uv tool install dbt-spec-kit --from git+https://github.com/duckcode-ai/dbt-spec-kit.git
-dbt-specify init my-project --warehouse snowflake
+dbt-specify --version
 ```
 
-## What you get
+Supported warehouse presets: `snowflake`, `databricks`, `trino`, and `bigquery`.
 
-Running `init` in your existing dbt project creates:
+## What init adds
 
-- `.dbt-specify/constitution.md` — the project's non-negotiable principles (base + warehouse-specific additions)
-- `.dbt-specify/templates/` — spec, plan, tasks, retro templates
-- `.dbt-specify/skills/` — tier-2 and tier-3 skills for writing specs
-- `.dbt-specify/commands/` — slash-command prompts (`/dbt.specify`, `/dbt.plan`, `/dbt.tasks`, `/dbt.implement`, `/dbt.analyze`, `/dbt.review`)
-- `CLAUDE.md` — references the constitution, defers tier-1 questions to `dbt-labs/dbt-agent-skills`
-- `specs/` — empty directory for your first spec
+Running `dbt-specify init` in an existing dbt project creates:
 
-The CLI also ships enterprise checks:
+- `.dbt-specify/constitution.md` for project principles and warehouse guardrails
+- `.dbt-specify/templates/` for spec, plan, tasks, retro, and CI templates
+- `.dbt-specify/skills/` for spec-writing guidance
+- `.dbt-specify/commands/` for agent prompts
+- `CLAUDE.md` or `CLAUDE.md.dbt-specify-suggested`
+- `specs/` for feature-level SDLC artifacts
+
+The agent commands are:
+
+- `/dbt.specify` drafts the requirement.
+- `/dbt.plan` creates a file-by-file implementation contract.
+- `/dbt.tasks` decomposes the approved plan into small tasks.
+- `/dbt.implement` executes one task at a time.
+- `/dbt.analyze` checks traceability before implementation.
+- `/dbt.review` reviews the final diff against the approved plan.
+
+## CI trust boundary
+
+Use these checks locally or in CI:
 
 ```bash
-dbt-specify doctor
 dbt-specify validate project
 dbt parse
 dbt-specify validate dbt --manifest target/manifest.json
 dbt-specify report --format markdown
-dbt-specify ci
 ```
 
-## The three positioning pillars
+Use `dbt-specify ci` when the lifecycle and dbt artifact checks should block a PR.
 
-| Pillar | What we ship |
-|---|---|
-| Methodology layer | Constitution + four-phase templates + agent commands |
-| Trust layer | Lifecycle validation, manifest-aware dbt checks, doctor, CI report output |
-| Warehouse presets | Snowflake, Databricks, Trino, and BigQuery guardrails |
-| Tier-3 skills | The one nobody else ships — writing business glossary and entity-resolution specs |
+## Who this is for
 
-## What this is not
-
-- **Not a replacement** for `dbt-labs/dbt-agent-skills`. Install both. They compose.
-- **Not an IDE.** Markdown templates, policy checks, and a CLI. Bring your own agent.
-- **Not opinionated about agents.** Works with anything that reads markdown context.
-- **Not full autonomy.** The default is controlled autonomy: humans approve specs, plans, and final diffs.
-
-## Worked example
-
-See [`examples/jaffle-shop-staging-overhaul/`](examples/jaffle-shop-staging-overhaul/) for a complete spec → plan → tasks → implementation trace.
-
-For a more enterprise-shaped example, see [`examples/enterprise-customer-360/`](examples/enterprise-customer-360/) with source freshness, semantic impact, PII governance, and CI evidence.
+- Analytics engineers who want AI help without losing dbt conventions.
+- Data platform leads standardizing AI-assisted delivery across teams.
+- dbt consultants who need a repeatable client onboarding method.
+- OSS contributors building warehouse presets, validators, examples, and skills.
 
 ## Docs
 
-- [Getting started](docs/getting-started.md) — install + your first spec in 5 minutes
-- [Methodology](docs/methodology.md) — the four-phase loop in depth
-- [Enterprise CI](docs/enterprise-ci.md) — validation commands and PR evidence
-- [Brownfield onboarding](docs/brownfield-onboarding.md) — adopt in an existing dbt repo
-- [v1 release plan](docs/v1-enterprise-release.md) — product strategy and rollout notes
-- [EARS cheatsheet](docs/ears-cheatsheet.md) — the five testable spec patterns with dbt examples
+- [Getting started](docs/getting-started.md)
+- [Jaffle-shop AI SDLC walkthrough](docs/jaffle-shop-ai-sdlc-walkthrough.md)
+- [Team onboarding playbook](docs/team-onboarding-playbook.md)
+- [Methodology](docs/methodology.md)
+- [Enterprise CI](docs/enterprise-ci.md)
+- [Brownfield onboarding](docs/brownfield-onboarding.md)
+- [EARS cheatsheet](docs/ears-cheatsheet.md)
 - [Snowflake guide](docs/warehouse-guides/snowflake.md)
 - [Databricks guide](docs/warehouse-guides/databricks.md)
 - [Trino guide](docs/warehouse-guides/trino.md)
 - [BigQuery guide](docs/warehouse-guides/bigquery.md)
 
-## Contributing
+## OSS project
 
-See [CONTRIBUTING.md](CONTRIBUTING.md). The most useful contributions today: a BigQuery preset, more tier-3 skills, real-world worked examples from your project.
+- [Contributing](CONTRIBUTING.md)
+- [Security](SECURITY.md)
+- [Support](SUPPORT.md)
+- [Roadmap](ROADMAP.md)
+- [Changelog](CHANGELOG.md)
+
+## What this is not
+
+- Not a replacement for dbt or dbt Cloud.
+- Not a replacement for `dbt-labs/dbt-agent-skills`.
+- Not an IDE or hosted service.
+- Not full autonomy or auto-merge.
 
 ## License
 
