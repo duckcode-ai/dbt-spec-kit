@@ -50,6 +50,10 @@ Tasks are ordered by dependency: sources → staging → intermediate → marts 
 **Human checkpoint:** the engineer reviews and approves the final diff before merge.
 
 `/dbt.implement` runs one task per invocation. After each task: validate, commit with the task-id message format, and stop. Never work ahead.
+
+For small, approved plans, `/dbt.implement-all` may run the pending tasks sequentially. It still
+validates and commits after each task, stops on any failure or scope expansion, and never merges.
+Use it only after the spec, plan, and task list have been reviewed.
 If delegated, the implementation worker follows `.dbt-specify/agents/implementation-agent.md` and
 may edit only files listed in the approved plan.
 

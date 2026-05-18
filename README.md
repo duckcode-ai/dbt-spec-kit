@@ -107,6 +107,7 @@ The agent commands are:
 - `/dbt.plan` creates a file-by-file implementation contract.
 - `/dbt.tasks` decomposes the approved plan into small tasks.
 - `/dbt.implement` executes one task at a time.
+- `/dbt.implement-all` executes approved pending tasks sequentially, stopping on validation or scope failures.
 - `/dbt.analyze` checks traceability before implementation.
 - `/dbt.review` reviews the final diff against the approved plan.
 

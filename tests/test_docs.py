@@ -33,6 +33,21 @@ def test_jaffle_shop_walkthrough_has_required_commands() -> None:
         assert command in text
 
 
+def test_implement_all_command_is_documented() -> None:
+    command = (ROOT / "commands" / "dbt.implement-all.md").read_text()
+    assert "execute approved pending tasks" in command
+    assert "Commit using the message format" in command
+    assert "Stop immediately" in command
+    assert "Never auto-merge" in command
+
+    readme = (ROOT / "README.md").read_text()
+    claude_template = (ROOT / "templates" / "CLAUDE.md.template").read_text()
+    methodology = (ROOT / "docs" / "methodology.md").read_text()
+    assert "/dbt.implement-all" in readme
+    assert "/dbt.implement-all" in claude_template
+    assert "/dbt.implement-all" in methodology
+
+
 def test_launch_ready_oss_files_exist() -> None:
     required_paths = [
         "SECURITY.md",
