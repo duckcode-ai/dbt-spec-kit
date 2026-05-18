@@ -59,7 +59,7 @@ For Snowflake, Databricks, or Trino, replace `bigquery` with the matching preset
 Run the brownfield diagnostic:
 
 ```bash
-dbt-specify doctor
+uvx --from dbt-spec-kit dbt-specify doctor
 ```
 
 Expected result: doctor reports adoption status for `.dbt-specify/`, `.dbt-specify/agents/`,
@@ -134,11 +134,13 @@ ahead to unrelated model cleanup.
 Before review, run:
 
 ```bash
-dbt-specify validate project
+uvx --from dbt-spec-kit dbt-specify validate project
 dbt parse
-dbt-specify validate dbt --manifest target/manifest.json
-dbt-specify report --format markdown > dbt-specify-report.md
+uvx --from dbt-spec-kit dbt-specify validate dbt --manifest target/manifest.json
+uvx --from dbt-spec-kit dbt-specify report --format markdown > dbt-specify-report.md
 ```
+
+If you installed with `uv tool install dbt-spec-kit`, the direct `dbt-specify` command is equivalent.
 
 Then ask the agent:
 

@@ -26,6 +26,14 @@ Verify:
 dbt-specify --version
 ```
 
+Use this persistent install when you want to run `dbt-specify` directly. If you choose one-off
+`uvx` commands instead, prefix every dbt-spec-kit CLI call with `uvx --from dbt-spec-kit`:
+
+```bash
+uvx --from dbt-spec-kit dbt-specify --version
+uvx --from dbt-spec-kit dbt-specify doctor
+```
+
 ## Initialize in your dbt project
 
 ```bash

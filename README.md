@@ -54,7 +54,7 @@ cd jaffle-shop
 
 uvx --from dbt-spec-kit dbt-specify init jaffle-shop --warehouse bigquery
 
-dbt-specify doctor
+uvx --from dbt-spec-kit dbt-specify doctor
 ```
 
 Then use your AI agent:
@@ -73,8 +73,12 @@ See the full walkthrough: [Jaffle-shop AI SDLC walkthrough](docs/jaffle-shop-ai-
 
 Requires Python 3.11+. Recommended via [uv](https://docs.astral.sh/uv/).
 
+Use `uvx` for one-off commands. `uvx` does not install a permanent `dbt-specify` command, so keep
+the `uvx --from dbt-spec-kit` prefix for each CLI call:
+
 ```bash
 uvx --from dbt-spec-kit dbt-specify init my-project --warehouse snowflake
+uvx --from dbt-spec-kit dbt-specify doctor
 ```
 
 From GitHub source for development builds:
@@ -89,7 +93,10 @@ Persistent install:
 ```bash
 uv tool install dbt-spec-kit
 dbt-specify --version
+dbt-specify doctor
 ```
+
+Use the persistent install when you want to run `dbt-specify` directly from your shell.
 
 Supported warehouse presets: `snowflake`, `databricks`, `trino`, `bigquery`, `redshift`,
 `postgres`, `sqlserver`, `azure-sql`, `mysql`, `duckdb`, `motherduck`, and `athena`.
@@ -159,6 +166,9 @@ dbt parse
 dbt-specify validate dbt --manifest target/manifest.json
 dbt-specify report --format markdown
 ```
+
+If you did not install the CLI persistently, run the `dbt-specify` commands above with
+`uvx --from dbt-spec-kit dbt-specify ...`.
 
 Use `dbt-specify ci` when the lifecycle and dbt artifact checks should block a PR.
 

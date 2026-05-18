@@ -10,17 +10,23 @@ This tutorial adds dbt-spec-kit to an existing dbt project and explains what cha
 
 ## 1. Install the CLI
 
-Use `uvx` for a one-time run:
+For tutorials and daily use, install the CLI as a persistent tool:
+
+```bash
+uv tool install dbt-spec-kit
+dbt-specify --version
+```
+
+Use `uvx` only for one-time commands. `uvx` does not install a permanent `dbt-specify` command:
 
 ```bash
 uvx --from dbt-spec-kit dbt-specify --version
 ```
 
-Or install it as a persistent tool:
+If you choose `uvx`, keep the prefix on every dbt-spec-kit command:
 
 ```bash
-uv tool install dbt-spec-kit
-dbt-specify --version
+uvx --from dbt-spec-kit dbt-specify doctor
 ```
 
 ## 2. Initialize your dbt project

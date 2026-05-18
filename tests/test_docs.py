@@ -146,6 +146,21 @@ def test_readme_highlights_enterprise_adoption_choices() -> None:
     assert "not as nested folders" in readme
 
 
+def test_uvx_command_examples_are_clear() -> None:
+    readme = (ROOT / "README.md").read_text()
+    getting_started = (ROOT / "docs" / "getting-started.md").read_text()
+    jaffle_tutorial = (ROOT / "docs" / "tutorials" / "02-jaffle-shop-change.md").read_text()
+    jaffle_walkthrough = (ROOT / "docs" / "jaffle-shop-ai-sdlc-walkthrough.md").read_text()
+
+    assert "does not install a permanent `dbt-specify` command" in readme
+    assert "uvx --from dbt-spec-kit dbt-specify doctor" in readme
+    assert "prefix every dbt-spec-kit CLI call" in getting_started
+    assert "uvx --from dbt-spec-kit dbt-specify doctor" in jaffle_tutorial
+    assert "uvx --from dbt-spec-kit dbt-specify validate project" in jaffle_tutorial
+    assert "uvx --from dbt-spec-kit dbt-specify doctor" in jaffle_walkthrough
+    assert "direct `dbt-specify` command is equivalent" in jaffle_walkthrough
+
+
 def test_tutorials_cover_enterprise_onboarding_path() -> None:
     tutorials_dir = ROOT / "docs" / "tutorials"
     required_paths = [
