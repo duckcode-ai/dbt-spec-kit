@@ -6,6 +6,7 @@ from pathlib import Path
 from click.testing import CliRunner
 
 from dbt_specify.cli import main
+from dbt_specify.init import SUPPORTED_WAREHOUSES
 from dbt_specify.templates_loader import asset_dir, load_template
 
 
@@ -49,6 +50,8 @@ def test_init_help_shows_flags() -> None:
     assert "--warehouse" in result.output
     assert "--force" in result.output
     assert "--target" in result.output
+    for warehouse in SUPPORTED_WAREHOUSES:
+        assert warehouse in result.output
 
 
 def test_init_creates_dbt_specify_dir(minimal_dbt_project: Path) -> None:
@@ -182,6 +185,52 @@ def test_init_bigquery_preset(minimal_dbt_project: Path) -> None:
     assert "BEGIN BIGQUERY ADDITIONS" in constitution
     assert "partitioning" in constitution.lower()
     assert "BigQuery-specific concerns" in plan
+
+
+def test_every_supported_warehouse_preset_initializes(tmp_path: Path) -> None:
+    runner = CliRunner()
+    expected_skill_by_warehouse = {
+        "snowflake": "snowflake-clustering-decisions",
+        "databricks": "databricks-liquid-clustering-decisions",
+        "trino": "trino-federated-query-patterns",
+        "bigquery": "bigquery-partitioning-decisions",
+        "redshift": "redshift-dist-sort-decisions",
+        "postgres": "postgres-index-materialization-decisions",
+        "sqlserver": "sqlserver-index-and-incremental-decisions",
+        "azure-sql": "azure-sql-service-tier-decisions",
+        "mysql": "mysql-oltp-safe-analytics-decisions",
+        "duckdb": "duckdb-local-analytics-decisions",
+        "motherduck": "motherduck-collaboration-decisions",
+        "athena": "athena-partition-file-layout-decisions",
+    }
+    assert set(expected_skill_by_warehouse) == set(SUPPORTED_WAREHOUSES)
+
+    for warehouse in SUPPORTED_WAREHOUSES:
+        project_dir = tmp_path / warehouse
+        project_dir.mkdir()
+        (project_dir / "dbt_project.yml").write_text(
+            "name: test_project\nversion: '1.0.0'\nprofile: test\n"
+        )
+        (project_dir / "models").mkdir()
+
+        result = runner.invoke(
+            main,
+            ["init", "test", "--warehouse", warehouse, "--target", str(project_dir)],
+        )
+        assert result.exit_code == 0, result.output
+
+        constitution = (project_dir / ".dbt-specify" / "constitution.md").read_text()
+        plan = (project_dir / ".dbt-specify" / "templates" / "plan-template.md").read_text()
+        expected_marker = f"BEGIN {warehouse.upper()} ADDITIONS"
+        assert expected_marker in constitution
+        assert f"BEGIN {warehouse.upper()} PLAN ADDITIONS" in plan
+        assert (
+            project_dir
+            / ".dbt-specify"
+            / "skills"
+            / expected_skill_by_warehouse[warehouse]
+            / "SKILL.md"
+        ).exists()
 
 
 def test_init_existing_claude_md_writes_suggested_file(minimal_dbt_project: Path) -> None:

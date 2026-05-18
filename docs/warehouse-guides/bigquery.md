@@ -3,6 +3,12 @@
 The BigQuery preset adds planning requirements for partitioning, clustering, materialization, cost,
 policy tags, authorized views, and BI Engine expectations.
 
+Use it with:
+
+```bash
+dbt-specify init analytics --warehouse bigquery
+```
+
 ## Partitioning
 
 Large fact-like tables should partition by the date or timestamp column that bounds routine

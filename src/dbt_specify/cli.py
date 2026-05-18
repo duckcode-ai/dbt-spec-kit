@@ -8,7 +8,7 @@ import click
 from dbt_specify._version import __version__
 from dbt_specify.dbt_artifacts import validate_dbt_project
 from dbt_specify.doctor import doctor_project
-from dbt_specify.init import init_project
+from dbt_specify.init import SUPPORTED_WAREHOUSES, init_project
 from dbt_specify.lifecycle import validate_lifecycle
 from dbt_specify.reporting import ValidationReport, combine_reports
 from dbt_specify.validate import validate_spec
@@ -24,7 +24,7 @@ def main() -> None:
 @click.argument("project_name")
 @click.option(
     "--warehouse",
-    type=click.Choice(["snowflake", "databricks", "trino", "bigquery"], case_sensitive=False),
+    type=click.Choice(SUPPORTED_WAREHOUSES, case_sensitive=False),
     required=True,
     help="Warehouse preset to install alongside the base constitution.",
 )

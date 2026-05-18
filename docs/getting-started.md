@@ -42,7 +42,8 @@ This creates:
 - `CLAUDE.md` — the agent orientation file (or `CLAUDE.md.dbt-specify-suggested` if you already have one)
 - `specs/` — empty directory for your first spec
 
-Supported warehouse presets: `snowflake`, `databricks`, `trino`, and `bigquery`.
+Supported warehouse presets: `snowflake`, `databricks`, `trino`, `bigquery`, `redshift`,
+`postgres`, `sqlserver`, `azure-sql`, `mysql`, `duckdb`, `motherduck`, and `athena`.
 
 ## Compose with dbt-labs/dbt-agent-skills
 
@@ -102,5 +103,5 @@ dbt-specify doctor
 - Use the [team onboarding playbook](team-onboarding-playbook.md) when presenting the workflow to an analytics engineering team.
 - Read [methodology.md](methodology.md) for the full four-phase loop.
 - Read [skills-and-sub-agents.md](skills-and-sub-agents.md) for dbt Labs skills composition and safe sub-agent delegation.
-- Read [warehouse-guides/snowflake.md](warehouse-guides/snowflake.md) or [databricks.md](warehouse-guides/databricks.md) for your warehouse's preset.
+- Read the [warehouse guides](warehouse-guides/snowflake.md) for preset-specific planning rules.
 - See [`examples/jaffle-shop-staging-overhaul/`](../examples/jaffle-shop-staging-overhaul/) for a complete worked example.
